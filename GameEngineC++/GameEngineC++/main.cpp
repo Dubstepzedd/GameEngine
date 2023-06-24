@@ -1,10 +1,9 @@
-#include <iostream>
 #include "container.h"
 
-int main() {
+int main(void) {
 
 	std::cout << "Starting..." << std::endl;
 	Container container = Container();
-	container.run();
-	return 0;
+	return container.run();
+
 }
