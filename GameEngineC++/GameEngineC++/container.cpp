@@ -1,39 +1,49 @@
 #include "container.h"
 
-int Container::run() {
-    //TODO Get rid of the console window.
-    //TODO Fix loop and so on.
-	std::cout << "Running..." << std::endl;
-    GLFWwindow* window;
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+void Container::run() {
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+	Window window("Test", 600, 400);
+	window.init();
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+	/* We should probably make this multithreaded. When moving the window the updates stop.
+	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
+	
+	std::thread renderThread(&Container::render, this, std::ref(window));
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+	time_t start = clock();
+	while (window.isRunning()) {
+		time_t end = clock();
+		double diff = difftime(end, start);
+	
+		while (diff >= UPDATE_FREQ) {
+			start = end;
+			diff -= UPDATE_FREQ;
+			//Update here
+			//TODO Maybe.. maybe add another thread here if it gets too complex.
+			glfwPollEvents();
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+			//When this flag is true we render!
+			this->active = true;
+			
+		}
+		
+	}
 
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
 }
+
+void Container::render(Window& window) {
+	/* Make the window's context current */
+	window.makeContext();
+	
+	while (window.isRunning()) {
+		//std::cout << this->active << std::endl;
+		if (this->active.load()) {
+			//Render stuff
+			window.update();
+			this->active = false;
+		}
+	}
+}
+
+
