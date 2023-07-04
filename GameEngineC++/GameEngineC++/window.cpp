@@ -7,17 +7,16 @@ void onBufferUpdate(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-/* Other */
-Window::Window(const std::string name, const int width, const int height) {
-    this->wSize.x = width;
-    this->wSize.y = height;
-    this->name = name;
-    this->clearColor = clearColor;
-}
+int Window::start(const std::string name, const int w, const int h, bool vSync, bool isResizable) {
 
-int Window::start(const bool vSync, const bool isResizeable) {
+    /* This will not allow for multiple windows. We might want this in the future, but right now it will cause issues.*/
+    if (window != nullptr && isRunning()) {
+        return 1;
+    }
 
     /* 1 = EXIT_FAILURE. 0 = EXIT_SUCCESS. Exit as in from the function. */
+    wSize.x = w;
+    wSize.y = h;
 
     /* Initialize GLFW */
     if (!glfwInit()) {
@@ -25,7 +24,7 @@ int Window::start(const bool vSync, const bool isResizeable) {
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(this->wSize.x, this->wSize.y, this->name.c_str(), NULL, NULL);
+    window = glfwCreateWindow(this->wSize.x, this->wSize.y, name.c_str(), NULL, NULL);
 
     /* If something went wrong, terminate GLFW. */
     if (!window) {
@@ -34,7 +33,7 @@ int Window::start(const bool vSync, const bool isResizeable) {
     }
 
     //Configure GLFW
-    glfwWindowHint(GLFW_RESIZABLE, isResizeable);
+    glfwWindowHint(GLFW_RESIZABLE, isResizable);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

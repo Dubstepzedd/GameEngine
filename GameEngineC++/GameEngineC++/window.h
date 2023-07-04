@@ -16,9 +16,17 @@ class Window {
 
 public:
 
-	Window(const std::string name, const int width, const int height);
+	//Window(const std::string name, const int width, const int height);
+	static Window& getInstance() {
+		static Window window;
 
-	int start(const bool vSync, const bool isResizable);
+		return window;
+	}
+
+	Window(const Window&) = delete;
+	void operator=(const Window&) = delete;
+
+	int start(const std::string name, const int w, const int h,  bool vSync, bool isResizable);
 	void update();
 	void setSize(const int width, const int height);
 	bool isRunning();
@@ -36,14 +44,15 @@ public:
 
 	
 private:
+	Window() {};
 	glm::ivec2 wSize{};
 	glm::ivec2 pos{};
-	std::string name;
-	GLFWwindow* window;
-	bool vSync;
-	const  GLFWvidmode* videoMode;
-	Color clearColor;
+	GLFWwindow* window = nullptr;
+	bool vSync = false;
+	const  GLFWvidmode* videoMode = nullptr;
+	Color clearColor{};
 	bool fullscreen = false;
+
 };
 
 
