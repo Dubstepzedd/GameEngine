@@ -3,12 +3,7 @@
 
 #include <iostream>
 #include <GLFW/glfw3.h>
-
-
-struct Vector {
-	int x;
-	int y;
-};
+#include <glm/vec2.hpp>
 
 struct Color {
 	float r;
@@ -23,12 +18,12 @@ public:
 
 	Window(const std::string name, const int width, const int height);
 
-	void start(const bool vSync, const bool isResizable);
+	int start(const bool vSync, const bool isResizable);
 	void update();
 	void setSize(const int width, const int height);
 	bool isRunning();
 	void setClearColor(const float r, const float g, const float b, const float a);
-	Vector getSize();
+	glm::dvec2 getSize();
 	void makeContext();
 	void destroy();
 	void setVSync(const bool vSync);
@@ -36,21 +31,19 @@ public:
 	int getResolutionY();
 	int getResolutionX();
 	void setFullscreen(const bool value);
-
-	Vector getDimensions() {
-		return this->size;
-	}
+	bool isFullscreen();
+	bool isVSync();
 
 	
 private:
-	Vector size;
-	Vector pos;
+	glm::ivec2 wSize{};
+	glm::ivec2 pos{};
 	std::string name;
 	GLFWwindow* window;
 	bool vSync;
 	const  GLFWvidmode* videoMode;
 	Color clearColor;
-
+	bool fullscreen = false;
 };
 
 

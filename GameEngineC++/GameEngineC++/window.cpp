@@ -1,4 +1,6 @@
 #include "window.h"
+#include "listeners.h"
+
 /* Callback methods */
 
 void onBufferUpdate(GLFWwindow* window, int width, int height) {
@@ -6,30 +8,29 @@ void onBufferUpdate(GLFWwindow* window, int width, int height) {
 }
 
 /* Other */
-/* TODO: Make class singleton? Should only be one. */
 Window::Window(const std::string name, const int width, const int height) {
-    this->size = Vector();
-    this->size.x = width;
-    this->size.y = height;
+    this->wSize.x = width;
+    this->wSize.y = height;
     this->name = name;
     this->clearColor = clearColor;
 }
 
-void Window::start(const bool vSync, const bool isResizeable) {
+int Window::start(const bool vSync, const bool isResizeable) {
+
+    /* 1 = EXIT_FAILURE. 0 = EXIT_SUCCESS. Exit as in from the function. */
 
     /* Initialize GLFW */
     if (!glfwInit()) {
-        //TODO Do something here, like log and save return code.
-        exit(EXIT_FAILURE);
+        return 1; 
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(this->size.x, this->size.y, this->name.c_str(), NULL, NULL);
-    
+    window = glfwCreateWindow(this->wSize.x, this->wSize.y, this->name.c_str(), NULL, NULL);
+
     /* If something went wrong, terminate GLFW. */
     if (!window) {
         glfwTerminate();
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
     //Configure GLFW
@@ -40,13 +41,23 @@ void Window::start(const bool vSync, const bool isResizeable) {
 
     /* Set variables */
     this->setVSync(vSync);
-    this->setSize(this->size.x, this->size.y);
+    this->setSize(this->wSize.x, this->wSize.y);
     this->videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+    int fWidth, fHeight;
+    glfwGetFramebufferSize(window, &fWidth, &fHeight);
+    glViewport(0, 0, fWidth, fHeight);
 
     /* Store the position for fullscreen toggle */
     glfwGetWindowPos(window, &this->pos.x, &this->pos.y);
     /* Standard Callbacks - shall not be changed! */
     glfwSetFramebufferSizeCallback(window, onBufferUpdate);
+
+    glfwSetKeyCallback(window, Listener::key_callback);
+    glfwSetMouseButtonCallback(window, Listener::mouse_button_callback);
+    glfwSetCursorPosCallback(window, Listener::cursor_position_callback);
+
+    return 0;
 }
 
 void Window::setClearColor(const float r, const float g, const float b, const float a) {
@@ -63,8 +74,8 @@ void Window::update() {
 
 }
 
-Vector Window::getSize() {
-    Vector size;
+glm::dvec2 Window::getSize() {
+    glm::ivec2 size;
     glfwGetWindowSize(this->window, &size.x, &size.y);
     return size;
 }
@@ -81,8 +92,6 @@ void Window::destroy() {
 }
 void Window::makeContext() {
     glfwMakeContextCurrent(this->window);
-    /* Set the viewport (render area) */
-    glViewport(0, 0, this->size.x, this->size.y);
 }
 
 void Window::setVSync(const bool vSync) {
@@ -92,12 +101,15 @@ void Window::setVSync(const bool vSync) {
 }
 
 void Window::setFullscreen(const bool value) {
+    fullscreen = value;
     if (value) {
         glfwGetWindowPos(window, &this->pos.x, &this->pos.y);
+        glfwGetWindowSize(window, &this->wSize.x, &this->wSize.y);
+
         glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, this->videoMode->width, this->videoMode->height, this->videoMode->refreshRate);
     }
     else {
-        glfwSetWindowMonitor(window, NULL, this->pos.x, this->pos.y, this->size.x, this->size.y, this->videoMode->refreshRate);
+        glfwSetWindowMonitor(window, NULL, this->pos.x, this->pos.y, this->wSize.x, this->wSize.y, this->videoMode->refreshRate);
     }
 }
 
@@ -112,4 +124,12 @@ int Window::getResolutionY() {
 
 int Window::getResolutionX() {
     return this->videoMode->width;
+}
+
+bool Window::isFullscreen() {
+    return fullscreen;
+}
+
+bool Window::isVSync() {
+    return vSync;
 }

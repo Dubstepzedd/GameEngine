@@ -3,8 +3,6 @@
 int main() {
 
 	Container container;
-	container.run();
-
-	return 0;
+	return container.run();
 
 }

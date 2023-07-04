@@ -1,12 +1,17 @@
 #include "container.h"
+#include "listeners.h"
 
-void Container::run() {
+int Container::run() {
 
-	Window window("Test", 1920, 1080);
-	
-	window.start(false, true);
-	window.setClearColor(1, 1, 1, 1);
 
+	Window window("Test", 520, 480);
+
+	int code = window.start(false, true);
+
+	if (code == 1)
+		return 1;
+
+	window.setClearColor(1, 0, 1, 1);
 	/* We should probably make this multithreaded. When moving the window the updates stop.
 	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
 	
@@ -14,6 +19,7 @@ void Container::run() {
 
 	std::cout << "Resoultion: " << window.getResolutionX() << ":" << window.getResolutionY() << std::endl;
 	std::cout << "Refresh rate: " << window.getRefreshRate() << std::endl;
+	float cd = 0;
 
 	time_t start = clock();
 	while (window.isRunning()) {
@@ -23,8 +29,18 @@ void Container::run() {
 		while (diff >= UPDATE_FREQ) {
 			start = end;
 			diff -= UPDATE_FREQ;
+
 			/* We poll the events (has to be on main thread) */
 			glfwPollEvents();
+
+			/* Handle F11 keybind for fullscreen */
+			cd += UPDATE_FREQ;
+			if (Listener::getInstance().isKeyPressed(GLFW_KEY_F11) && cd >= 500) {
+				window.setFullscreen(!window.isFullscreen());
+				cd = 0;
+			}
+
+
 			update(window);
 			/* We set isUpdate to true, that thread will tell us when to render. */
 			this->isRender = true;
@@ -32,8 +48,13 @@ void Container::run() {
 		
 	}
 
+	/* Wait for renderThread to exit. */
+	renderThread.join();
+
+	/* Destroy objects and so fourth. */
 	window.destroy();
 	glfwTerminate();
+	return 0;
 
 }
 
@@ -56,6 +77,5 @@ void Container::render(Window& window) {
 
 
 void Container::update(Window& window) {
-	
-
+	std::cout << Listener::getInstance().getMousePos().x << std::endl;
 }
