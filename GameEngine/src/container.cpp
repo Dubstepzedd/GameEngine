@@ -1,5 +1,6 @@
 #include "container.h"
 #include "listener.h"
+#include "shader.h"
 
 int Container::run() {
 
@@ -11,9 +12,9 @@ int Container::run() {
 	Window::getInstance().setClearColor(1, 0, 1, 1);
 	/* We should probably make this multithreaded. When moving the window the updates stop.
 	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
-
+	
 	std::thread renderThread(&Container::render, this);
-
+	Shader shader("res/shaders/shader.glsl");
 	float cd = 0;
 
 	time_t start = clock();

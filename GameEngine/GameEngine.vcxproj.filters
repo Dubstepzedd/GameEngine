@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="src\listener.h" />
-    <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\window.h" />
     <ClInclude Include="src\container.h" />
+    <ClInclude Include="src\resources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -13,5 +13,9 @@
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\container.cpp" />
     <ClCompile Include="src\listener.cpp" />
+    <ClCompile Include="src\resources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\shader.glsl" />
   </ItemGroup>
 </Project>
