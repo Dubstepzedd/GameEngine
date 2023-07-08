@@ -19,15 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\container.cpp" />
-    <ClCompile Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\listener.cpp" />
-    <ClCompile Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\main.cpp" />
-    <ClCompile Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\window.cpp" />
+    <ClInclude Include="src\container.h" />
+    <ClInclude Include="src\listener.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\container.h" />
-    <ClInclude Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\listeners.h" />
-    <ClInclude Include="..\..\Users\liama\Desktop\GameEngine\GameEngineC++\GameEngineC++\window.h" />
+    <ClCompile Include="src\container.cpp" />
+    <ClCompile Include="src\listener.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
