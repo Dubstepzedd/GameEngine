@@ -14,7 +14,7 @@ int Container::run() {
 	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
 	
 	std::thread renderThread(&Container::render, this);
-	Shader shader("res/shaders/shader.glsl");
+	Shader::create("res/shaders/shader.glsl");
 	float cd = 0;
 
 	time_t start = clock();

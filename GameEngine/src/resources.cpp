@@ -1,16 +1,22 @@
 #include "resources.h"
 #include <fstream>      // std::ifstream
 #include <iostream>
+
 std::string Resources::readFile(const std::string path) {
+	//TODO Fix logging here.
+
 	std::string content;
 
 	std::ifstream reader(path, std::ifstream::in);
 
 	if (reader.fail()) {
-		std::cout << "File did not exist" << std::endl; // Temporary.
+		throw std::invalid_argument("Path to file is incorrect. No file was found.");
 	}
 
-	while(std::getline(reader, content)){}
+	std::string line;
+	while(std::getline(reader, line)){
+		content.append(line + '\n');
+	}
 
 	reader.close();
 
