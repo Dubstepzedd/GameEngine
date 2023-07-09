@@ -1,6 +1,0 @@
-[submodule "GameEngineC++/DependenciesGLM"]
-	path = GameEngineC++/DependenciesGLM
-	url = https://github.com/g-truc/glm
-[submodule "GameEngineC++/Dependencies/GLM"]
-	path = GameEngineC++/Dependencies/GLM
-	url = https://github.com/g-truc/glm
