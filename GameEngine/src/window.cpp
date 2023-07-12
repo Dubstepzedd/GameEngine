@@ -86,6 +86,10 @@ bool Window::isRunning() {
     return !glfwWindowShouldClose(this->window);
 }
 
+void Window::close() {
+    glfwSetWindowShouldClose(this->window, 0);
+}
+
 void Window::destroy() {
     glfwDestroyWindow(window);
 }

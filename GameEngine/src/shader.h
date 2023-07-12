@@ -1,14 +1,15 @@
 #ifndef SHADER_H
 #define SHADER_H
 #include <string>
-class Shader {
+#include <GL/glew.h>
 
-public:
-	Shader(const std::string path); 
-	void create(); 
-
-private:
-	
-
+struct ShaderData {
+	GLuint vertexId, fragmentId;
+	GLuint programId;
 };
+
+/* Static methods the ShaderData struct. */
+
+ShaderData createShader(const std::string path);
+
 #endif

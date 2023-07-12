@@ -39,6 +39,7 @@ public:
 	void setFullscreen(const bool value);
 	bool isFullscreen();
 	bool isVSync();
+	void close();
 
 	
 private:

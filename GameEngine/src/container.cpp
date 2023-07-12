@@ -1,20 +1,26 @@
+#include "shader.h"
 #include "container.h"
 #include "listener.h"
-#include "shader.h"
+
 
 int Container::run() {
-
 
 	int code = Window::getInstance().start("Test", 520, 480, false, true);
 	if (code == 1)
 		return 1;
 
+	Window::getInstance().makeContext();
+
+	/* Initialzie glew */
+	if (glewInit() != GLEW_OK) {
+		/* Not good, check if we can swap context with GLFW. */
+		return 1;
+	}
+
 	Window::getInstance().setClearColor(1, 0, 1, 1);
 	/* We should probably make this multithreaded. When moving the window the updates stop.
 	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
 	
-	std::thread renderThread(&Container::render, this);
-	Shader shader("res/shaders/shader.glsl");
 	float cd = 0;
 
 	time_t start = clock();
@@ -41,12 +47,19 @@ int Container::run() {
 			/* We set isUpdate to true, that thread will tell us when to render. */
 			this->isRender = true;
 
+
+		}
+
+		if (this->isRender) {
+			//Render stuff
+			Window::getInstance().update();
+			this->isRender = false;
+		}
+		else {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 
 	}
-
-	/* Wait for renderThread to exit. */
-	renderThread.join();
 
 	/* Destroy objects and so fourth. */
 	Window::getInstance().destroy();
@@ -56,22 +69,8 @@ int Container::run() {
 }
 
 void Container::render() {
-	/* Make the window's context current */
-	Window::getInstance().makeContext();
-
-	while (Window::getInstance().isRunning()) {
-
-		if (this->isRender) {
-			//Render stuff
-			Window::getInstance().update();
-			this->isRender = false;
-		}
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-	}
-
+	Window::getInstance().update();
 }
-
 
 void Container::update(float dt) {
 }

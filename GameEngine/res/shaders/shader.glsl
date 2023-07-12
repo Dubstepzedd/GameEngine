@@ -1,13 +1,14 @@
 #shader vertex
-
-int main {
-
+#version 460
+void main() {
 
 }
+
 
 #shader fragment
-
-int main {
-
+#version 460
+void main() {
 
 }
+
+
