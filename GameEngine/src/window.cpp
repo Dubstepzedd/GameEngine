@@ -35,9 +35,6 @@ int Window::start(const std::string name, const int w, const int h, bool vSync, 
     //Configure GLFW
     glfwWindowHint(GLFW_RESIZABLE, isResizable);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     /* Set variables */
     this->setVSync(vSync);
     this->setSize(this->wSize.x, this->wSize.y);
@@ -46,7 +43,6 @@ int Window::start(const std::string name, const int w, const int h, bool vSync, 
     int fWidth, fHeight;
     glfwGetFramebufferSize(window, &fWidth, &fHeight);
     glViewport(0, 0, fWidth, fHeight);
-
     /* Store the position for fullscreen toggle */
     glfwGetWindowPos(window, &this->pos.x, &this->pos.y);
     /* Standard Callbacks - shall not be changed! */
@@ -67,10 +63,10 @@ void Window::setClearColor(const float r, const float g, const float b, const fl
 }
 
 void Window::update() {
+    glfwSwapBuffers(this->window);
     glClearColor(this->clearColor.r, this->clearColor.g, this->clearColor.b, this->clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(this->window);
-
+  
 }
 
 glm::dvec2 Window::getSize() {

@@ -1,5 +1,4 @@
-#ifndef LISTENERS_H
-#define LISTENERS_H
+#pragma once
 #include "GLFW/glfw3.h"
 #include <glm/vec2.hpp>
 
@@ -40,4 +39,3 @@ public:
     //       due to the compilers behavior to check accessibility
     //       before deleted status
 };
-#endif

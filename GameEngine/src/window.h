@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <iostream>
 #include <GLFW/glfw3.h>
@@ -54,5 +53,3 @@ private:
 
 };
 
-
-#endif

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\container.h" />
     <ClInclude Include="src\listener.h" />
+    <ClInclude Include="src\model.h" />
     <ClInclude Include="src\resources.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\window.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="src\container.cpp" />
     <ClCompile Include="src\listener.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\resources.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\window.cpp" />

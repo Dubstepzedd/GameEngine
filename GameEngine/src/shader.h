@@ -1,15 +1,20 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 #include <string>
 #include <GL/glew.h>
 
-struct ShaderData {
+class Shader {
+	
+public:
+	Shader() {};
+	void create(const std::string path);
+	void enable();
+	void disable();
+private:
 	GLuint vertexId, fragmentId;
 	GLuint programId;
 };
 
 /* Static methods the ShaderData struct. */
 
-ShaderData createShader(const std::string path);
 
-#endif
+

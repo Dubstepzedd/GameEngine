@@ -1,5 +1,4 @@
-#ifndef CONTAINER_H
-#define CONTAINER_H
+#pragma once
 
 //Libraries
 #include "window.h"
@@ -16,7 +15,6 @@ private:
 	static constexpr float UPDATE_FREQ = 1000.0f / 60.0f; // milliseconds
 	void render();
 	void update(float dt);
+	void init();
 	std::atomic<bool> isRender = false;
 };
-
-#endif

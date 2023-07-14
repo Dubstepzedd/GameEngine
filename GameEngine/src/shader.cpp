@@ -2,7 +2,7 @@
 #include "resources.h"
 #include <iostream>
 
-ShaderData createShader(const std::string path) {
+void Shader::create(const std::string path) {
 	std::string shaderCode;
 	/* Try/Catch block to catch eventual parsing file errors */
 	try {
@@ -33,24 +33,21 @@ ShaderData createShader(const std::string path) {
 		fragment = shaderCode.substr(fragmentIndex + 16, vertexIndex - (fragmentIndex + 16));
 	}
 
-	/* Create the actual Shader and put it in a ShaderData struct. */
-	const char* src;
-	ShaderData data;
+	/* Create the actual Shader and put it in a Shaderthis struct. */
 	//Vertex Shader
-	data.vertexId = glCreateShader(GL_VERTEX_SHADER);
-	std::cout << "Test" << std::endl;
-	src = vertex.c_str();
-	glShaderSource(data.vertexId, 1,&src ,NULL);
-	glCompileShader(data.vertexId);
+	this->vertexId = glCreateShader(GL_VERTEX_SHADER);
+	const char* src = vertex.c_str();
+	glShaderSource(this->vertexId, 1,&src ,NULL);
+	glCompileShader(this->vertexId);
 
 	GLint status;
-	glGetShaderiv(data.vertexId, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(this->vertexId, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE) {
 		GLint infoLogLength;
-		glGetShaderiv(data.vertexId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		glGetShaderiv(this->vertexId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
-		glGetShaderInfoLog(data.vertexId, infoLogLength, NULL, strInfoLog);
+		glGetShaderInfoLog(this->vertexId, infoLogLength, NULL, strInfoLog);
 
 		//Temporary print that shall be replaced with logging
 		fprintf(stderr, "Compile failure in vertex shader:\n%s\n", strInfoLog);
@@ -58,44 +55,56 @@ ShaderData createShader(const std::string path) {
 	}
 
 	//Fragment Shader
-	data.fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
+	this->fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
 	src = fragment.c_str();
-	glShaderSource(data.fragmentId, 1, &src, NULL);
-	glCompileShader(data.fragmentId);
+	glShaderSource(this->fragmentId, 1, &src, NULL);
+	glCompileShader(this->fragmentId);
 
-	glGetShaderiv(data.fragmentId, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(this->fragmentId, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE) {
 		GLint infoLogLength;
-		glGetShaderiv(data.fragmentId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		glGetShaderiv(this->fragmentId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
-		glGetShaderInfoLog(data.fragmentId, infoLogLength, NULL, strInfoLog);
+		glGetShaderInfoLog(this->fragmentId, infoLogLength, NULL, strInfoLog);
 		//Temporary print that shall be replaced with logging
 		fprintf(stderr, "Compile failure in fragment shader:\n%s\n", strInfoLog);
 		delete[] strInfoLog;
 	}
+	
 
-	data.programId = glCreateProgram();
-	glAttachShader(data.programId, data.vertexId);
-	glAttachShader(data.programId, data.fragmentId);
-	glLinkProgram(data.programId);
+	this->programId = glCreateProgram();
+	glAttachShader(this->programId, this->vertexId);
+	glAttachShader(this->programId, this->fragmentId);
+	glLinkProgram(this->programId);
 
-	glGetProgramiv(data.programId, GL_LINK_STATUS, &status);
+
+	glGetProgramiv(this->programId, GL_LINK_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		GLint infoLogLength;
-		glGetProgramiv(data.programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+		glGetProgramiv(this->programId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
-		glGetProgramInfoLog(data.programId, infoLogLength, NULL, strInfoLog);
+		glGetProgramInfoLog(this->programId, infoLogLength, NULL, strInfoLog);
 		//Temporary print that shall be replaced with logging
 		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
 		delete[] strInfoLog;
 	}
 
 	/* Detach the shaders from the program, this does not affect the program's linking status */
-	glDetachShader(data.programId, data.vertexId);
-	glDetachShader(data.programId, data.fragmentId);
-	
-	return data;
+	glDetachShader(this->programId, this->vertexId);
+	glDetachShader(this->programId, this->fragmentId);
+
 }
+
+
+void Shader::disable() {
+	glUseProgram(0);
+}
+
+void Shader::enable() {
+	glUseProgram(this->programId);
+}
+
+//TODO Add uniforms
