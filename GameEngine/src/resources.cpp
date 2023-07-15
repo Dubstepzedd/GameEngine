@@ -1,4 +1,4 @@
-#include "resources.h"
+#include "Resources.h"
 #include <fstream>      // std::ifstream
 #include <iostream>
 

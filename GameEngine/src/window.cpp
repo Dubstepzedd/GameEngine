@@ -1,5 +1,5 @@
-#include "window.h"
-#include "listener.h"
+#include "Window.h"
+#include "Listener.h"
 
 /* Callback methods */
 

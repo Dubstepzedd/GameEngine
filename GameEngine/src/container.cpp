@@ -1,11 +1,12 @@
-#include "shader.h"
-#include "container.h"
-#include "listener.h"
+#include "Shader.h"
+#include "Container.h"
+#include "Listener.h"
 
 //TEMP
-#include "model.h"
-#include "shader.h"
+#include "Model.h"
+#include "Shader.h"
 #include "GL/glew.h"
+#include "Buffer.h"
 
 int Container::run() {
 
@@ -41,7 +42,7 @@ int Container::run() {
 	-0.5f, 0.5f, 0.0f,
 
 	};
-
+	BufferLayout layout = { {ShaderType::FLOAT3, "m_Pos"} };
 	Model model = Model();
 	model.create(vertices, sizeof(vertices), 3);
 	Shader shader = Shader();

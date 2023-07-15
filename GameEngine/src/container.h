@@ -1,7 +1,7 @@
 #pragma once
 
 //Libraries
-#include "window.h"
+#include "Window.h"
 #include <atomic>
 #include <time.h>
 #include <thread>

@@ -1,5 +1,5 @@
-#include "shader.h"
-#include "resources.h"
+#include "Shader.h"
+#include "Resources.h"
 #include <iostream>
 
 void Shader::create(const std::string path) {
