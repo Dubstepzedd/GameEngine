@@ -1,6 +1,9 @@
 #pragma once
+#include "GL/glew.h"
 #include <string>
 #include <vector>
+#include <iostream>
+
 
 enum class ShaderType {
 	FLOAT, FLOAT2, FLOAT3, MAT3, MAT4, INT, INT2, INT3, BOOL 
@@ -44,14 +47,31 @@ static unsigned int getComponentSize(ShaderType type) {
 	return 0;
 }
 
+static GLenum getOpenGLType(const ShaderType type) {
+	switch (type)
+	{
+		case ShaderType::FLOAT:		return GL_FLOAT;
+		case ShaderType::FLOAT2:	return GL_FLOAT;
+		case ShaderType::FLOAT3:	return GL_FLOAT;
+		case ShaderType::MAT3:		return GL_FLOAT;
+		case ShaderType::MAT4:		return GL_FLOAT;
+		case ShaderType::INT:		return GL_INT;
+		case ShaderType::INT2:		return GL_INT;
+		case ShaderType::INT3:		return GL_INT;
+		case ShaderType::BOOL:		return GL_BOOL;
+	}
+}
+
+
+
 struct BufferElement {
 	std::string Name;
 	uint32_t Size;
 	ShaderType Type;
 	uint32_t Offset;
+	bool Normalized;
 
-
-	BufferElement(ShaderType Type, std::string Name) : Name(Name), Type(Type), Size(getTypeSize(Type)), Offset(0) {}
+	BufferElement(ShaderType type, std::string name, bool normalized = false) : Name(name), Type(type), Size(getTypeSize(type)), Offset(0), Normalized(normalized) {}
 
 };
 
@@ -59,41 +79,46 @@ class BufferLayout {
 public:
 	BufferLayout(const std::initializer_list<BufferElement>& elements) : m_Elements(elements) {
 		
-		CalculateOffsetAndStride();
+		calculateOffsetAndStride();
 	}
 
-	void initialize();
-	void enable();
-	void disable();
+	void set() const;
+	void enable() const;
+	void disable() const;
+
 private:
+	void calculateOffsetAndStride();
 	std::vector<BufferElement> m_Elements;
 	uint32_t m_Stride;
 
-	void CalculateOffsetAndStride() {
-
-		uint32_t offset = 0;
-		m_Stride = 0;
-
-		for (auto& el : m_Elements) {
-			el.Offset = offset;
-			offset += el.Size;
-			m_Stride += el.Size;
-		}
-	}
 };
 
 class VertexBuffer {
 public:
-	VertexBuffer();
-	void setLayout(BufferLayout layout);
-	void bind();
-	void unbind();
+	//TODO Fix this. Restructure this.
+
+	//Has to know the amount of vertices it has. Create a better creation architecture.
+	VertexBuffer(float data[], uint32_t size, BufferLayout& layout) :  m_layout(layout) {
+		glGenVertexArrays(1, &m_Vao);
+		glBindVertexArray(m_Vao);
+		glGenBuffers(1, &m_Vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+		layout.set();
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+
+	void bind() const;
+	void unbind() const;
 
 private:
 	uint32_t m_Vbo, m_Vao;
-	//uint32_t m_Size, m_AttributeSize;
+	BufferLayout& m_layout; //Might be unnecessary?
 };
 
+//TODO IMPLEMENT
 class IndexBuffer {
 public:
 	IndexBuffer(std::initializer_list<unsigned int> indices) : m_Indices(indices) {};

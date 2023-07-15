@@ -22,6 +22,7 @@
     <ClInclude Include="src\Container.h" />
     <ClInclude Include="src\Listener.h" />
     <ClInclude Include="src\model.h" />
+    <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Resources.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Buffer.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="src\Listener.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\model.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Resources.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Buffer.cpp" />

@@ -8,6 +8,7 @@
     <ClInclude Include="src\Resources.h" />
     <ClInclude Include="src\model.h" />
     <ClInclude Include="src\Buffer.h" />
+    <ClInclude Include="src\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -18,6 +19,7 @@
     <ClCompile Include="src\Resources.cpp" />
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\Buffer.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.glsl" />

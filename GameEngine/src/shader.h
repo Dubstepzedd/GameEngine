@@ -10,8 +10,8 @@ public:
 	void enable();
 	void disable();
 private:
-	GLuint vertexId, fragmentId;
-	GLuint programId;
+	GLuint vertexId = 0, fragmentId = 0;
+	GLuint programId = 0;
 };
 
 /* Static methods the ShaderData struct. */

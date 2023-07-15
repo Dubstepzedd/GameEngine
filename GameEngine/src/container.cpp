@@ -1,11 +1,10 @@
-#include "Shader.h"
+#include "GL/glew.h"
 #include "Container.h"
 #include "Listener.h"
 
 //TEMP
 #include "Model.h"
 #include "Shader.h"
-#include "GL/glew.h"
 #include "Buffer.h"
 
 int Container::run() {
@@ -37,14 +36,15 @@ int Container::run() {
 	-0.5f, -0.5f, 0.0f,
 	0.5f, -0.5f, 0.0f,
 	0.5f,  0.5f, 0.0f,
+
 	-0.5f, -0.5f, 0.0f,
 	0.5f,  0.5f, 0.0f,
 	-0.5f, 0.5f, 0.0f,
 
 	};
 	BufferLayout layout = { {ShaderType::FLOAT3, "m_Pos"} };
-	Model model = Model();
-	model.create(vertices, sizeof(vertices), 3);
+
+	VertexBuffer buff(vertices, sizeof(vertices), layout);
 	Shader shader = Shader();
 	shader.create("res/shaders/shader.glsl");
 
@@ -82,11 +82,6 @@ int Container::run() {
 		if (this->isRender) {
 			//Render stuff
 			render();
-			//TEMP CODE
-			shader.enable();
-			model.draw();
-			shader.disable();
-			//
 			this->isRender = false;
 		}
 		else {
