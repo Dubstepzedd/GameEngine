@@ -14,7 +14,6 @@ void BufferLayout::calculateOffsetAndStride() {
 	}
 }
 
-/* The VertexBuffer has to be bound before executing this method. */
 void BufferLayout::set() const {
 	uint32_t index = 0;
 	for (auto& el : m_Elements) {
@@ -23,13 +22,11 @@ void BufferLayout::set() const {
 	}
 }
 
-/* The VertexBuffer has to be bound before executing this method. */
 void BufferLayout::enable() const {
 	for (uint32_t index = 0; index < m_Elements.size(); index++)
 		glEnableVertexAttribArray(index);
 }
 
-/* The VertexBuffer has to be bound before executing this method. */
 void BufferLayout::disable() const {
 	for (uint32_t index = 0; index < m_Elements.size(); index++)
 		glDisableVertexAttribArray(index);
@@ -39,11 +36,40 @@ void BufferLayout::disable() const {
 /** VertexBuffer methods **/
 
 void VertexBuffer::bind() const {
-	glBindVertexArray(m_Vao);
-	m_layout.enable();
+	glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
 }
 
 void VertexBuffer::unbind() const {
-	m_layout.disable();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+/** VertexArray methods **/
+
+void VertexArray::setBuffer(const VertexBuffer& buffer, const BufferLayout& layout) {
+	bind();
+	buffer.bind();
+	layout.enable();
+	layout.set();
+	buffer.unbind();
+	unbind();
+
+}
+
+void VertexArray::bind() const {
+	glBindVertexArray(m_Vao);
+}
+
+void VertexArray::unbind() const {
 	glBindVertexArray(0);
+}
+
+/** IndexBuffer methods **/
+
+void IndexBuffer::bind() const {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Ibo);
+}
+
+void IndexBuffer::unbind() const {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

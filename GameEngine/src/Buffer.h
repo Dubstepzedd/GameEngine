@@ -15,8 +15,8 @@ static unsigned int getTypeSize(ShaderType type) {
 		case ShaderType::FLOAT:		return sizeof(float);
 		case ShaderType::FLOAT2:	return sizeof(float) * 2;
 		case ShaderType::FLOAT3:	return sizeof(float) * 3;
-		case ShaderType::MAT3:		return 3 * 3 * sizeof(float);
-		case ShaderType::MAT4:		return  4 * 4 * sizeof(float);
+		case ShaderType::MAT3:		return 3 * 3 * sizeof(float); //9 floats in a MAT3.
+		case ShaderType::MAT4:		return  4 * 4 * sizeof(float); //16 floats in a MAT4.
 		case ShaderType::INT:		return sizeof(int);
 		case ShaderType::INT2:		return sizeof(int) * 2;
 		case ShaderType::INT3:		return sizeof(int) * 3;
@@ -81,7 +81,7 @@ public:
 		
 		calculateOffsetAndStride();
 	}
-
+	
 	void set() const;
 	void enable() const;
 	void disable() const;
@@ -98,32 +98,70 @@ public:
 	//TODO Fix this. Restructure this.
 
 	//Has to know the amount of vertices it has. Create a better creation architecture.
-	VertexBuffer(float data[], uint32_t size, BufferLayout& layout) :  m_layout(layout) {
-		glGenVertexArrays(1, &m_Vao);
-		glBindVertexArray(m_Vao);
+	VertexBuffer(std::initializer_list<float> vertexData) {
 		glGenBuffers(1, &m_Vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-		layout.set();
+		bind();
+		glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.begin(), GL_STATIC_DRAW);
+		unbind();
+	}
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
+	VertexBuffer(float data[], uint32_t sizeBytes) {
+		glGenBuffers(1, &m_Vbo);
+		bind();
+		glBufferData(GL_ARRAY_BUFFER, sizeBytes, data, GL_STATIC_DRAW);
+		unbind();
+	}
+
+	~VertexBuffer() {
+		glDeleteBuffers(1, &m_Vbo);
 	}
 
 	void bind() const;
 	void unbind() const;
 
 private:
-	uint32_t m_Vbo, m_Vao;
-	BufferLayout& m_layout; //Might be unnecessary?
+	uint32_t m_Vbo;
 };
 
-//TODO IMPLEMENT
 class IndexBuffer {
 public:
-	IndexBuffer(std::initializer_list<unsigned int> indices) : m_Indices(indices) {};
-	void bind();
-	void unbind();
+	IndexBuffer(std::initializer_list<unsigned int> indices) : m_Count(indices.size()) {
+		glGenBuffers(1, &m_Ibo);
+		bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.begin(), GL_STATIC_DRAW);
+		unbind();
+	};
+	~IndexBuffer() {
+		glDeleteBuffers(1, &m_Ibo);
+	}
+
+	void bind() const;
+	void unbind() const;
+
+	uint32_t getCount() const {
+		return m_Count;
+	}
+
 private:
-	std::vector<unsigned int> m_Indices;
+	uint32_t m_Ibo;
+	uint32_t m_Count;
+};
+
+class VertexArray {
+public:
+	VertexArray() {
+		glGenVertexArrays(1, &m_Vao);
+	}
+	~VertexArray() {
+		glDeleteVertexArrays(1, &m_Vao);
+	}
+
+	//TODO Might want to add so we can have multiple VertexBuffers with corresponding layouts.
+	void setBuffer(const VertexBuffer& buffer, const BufferLayout& layout);
+	void bind() const;
+	void unbind() const;
+
+
+private:
+	uint32_t m_Vao;
 };

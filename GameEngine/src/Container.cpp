@@ -3,6 +3,7 @@
 #include "Listener.h"
 
 //TEMP
+#include "Renderer.h"
 #include "Model.h"
 #include "Shader.h"
 #include "Buffer.h"
@@ -29,22 +30,26 @@ int Container::run() {
 
 	Window::getInstance().setClearColor(1, 1, 1, 1);
 
-	//TEMP CODE START
-
-	init();
-	float vertices[] = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	0.5f,  0.5f, 0.0f,
-
-	-0.5f, -0.5f, 0.0f,
-	0.5f,  0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f,
-
+	VertexArray vArr = VertexArray();
+	BufferLayout layout = { 
+		{ShaderType::FLOAT3, "aPos"},
+		{ShaderType::FLOAT3, "aColor"}
 	};
-	BufferLayout layout = { {ShaderType::FLOAT3, "m_Pos"} };
 
-	VertexBuffer buff(vertices, sizeof(vertices), layout);
+	VertexBuffer buff = {
+		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f, // top left 
+	};
+	vArr.setBuffer(buff, layout);
+
+	IndexBuffer iBuff = { 
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
+
+
 	Shader shader = Shader();
 	shader.create("res/shaders/shader.glsl");
 
@@ -59,7 +64,7 @@ int Container::run() {
 
 		while (diff >= UPDATE_FREQ) {
 			start = end;
-
+			
 			/* We poll the events (has to be on main thread) */
 			glfwPollEvents();
 
@@ -82,6 +87,11 @@ int Container::run() {
 		if (this->isRender) {
 			//Render stuff
 			render();
+			//TEMP CODE
+			shader.enable();
+			Renderer::draw(vArr,iBuff);
+			shader.disable();
+			//
 			this->isRender = false;
 		}
 		else {
@@ -99,13 +109,8 @@ int Container::run() {
 
 void Container::render() {
 	Window::getInstance().update();
+	Renderer::clear();
 }
 
-void Container::update(float dt) {
-}
-
-void Container::init() {
-	//??
-
-	
+void Container::update(const float dt) {
 }

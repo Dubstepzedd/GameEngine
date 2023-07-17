@@ -14,7 +14,6 @@ public:
 private:
 	static constexpr float UPDATE_FREQ = 1000.0f / 60.0f; // milliseconds
 	void render();
-	void update(float dt);
-	void init();
+	void update(const float dt);
 	std::atomic<bool> isRender = false;
 };

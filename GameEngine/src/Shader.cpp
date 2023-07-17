@@ -99,11 +99,11 @@ void Shader::create(const std::string path) {
 }
 
 
-void Shader::disable() {
+void Shader::disable() const{
 	glUseProgram(0);
 }
 
-void Shader::enable() {
+void Shader::enable() const {
 	glUseProgram(this->programId);
 }
 
