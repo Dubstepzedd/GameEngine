@@ -7,8 +7,8 @@ class Listener {
 public:
     static Listener& getInstance()
     {
-        static Listener instance; // Guaranteed to be destroyed (stack).
-        // Instantiated on first use.
+        static Listener instance; 
+        
         return instance;
     }
 
@@ -26,16 +26,8 @@ private:
     glm::vec2 mPos{};
   
 public:
-    // C++ 11
-    // =======
-    // We can use the better technique of deleting the methods
-    // we don't want.
+
     Listener(const Listener&) = delete;
     void operator=(const Listener&) = delete;
 
-    // Note: Scott Meyers mentions in his Effective Modern
-    //       C++ book, that deleted functions should generally
-    //       be public as it results in better error messages
-    //       due to the compilers behavior to check accessibility
-    //       before deleted status
 };

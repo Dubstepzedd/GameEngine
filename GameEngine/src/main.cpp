@@ -1,8 +1,8 @@
-#include "engine/core/Container.h"
+#include "engine/core/Application.h"
 
 int main() {
 
-	Container container;
-	return container.run();
+	Application app;
+	return app.run();
 
 }

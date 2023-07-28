@@ -1,4 +1,4 @@
-#include "engine/io/listener.h"
+#include "engine/events/listener.h"
 
 /* Keyboard callback */
 void Listener::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {

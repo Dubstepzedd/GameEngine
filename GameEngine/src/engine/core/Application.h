@@ -6,14 +6,12 @@
 #include <time.h>
 #include <thread>
 
-class Container {
+class Application {
 
 public:
 	int run();
 
 private:
-	static constexpr float UPDATE_FREQ = 1000.0f / 60.0f; // milliseconds
-	void render();
-	void update(const float dt);
 	std::atomic<bool> isRender = false;
+	float m_LastFrameTime = 0;
 };

@@ -9,7 +9,7 @@ void Renderer::draw(const VertexArray& vArr, const IndexBuffer& iBuff) {
 }
 
 void Renderer::clear() {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::bindShader(const Shader& shader) {

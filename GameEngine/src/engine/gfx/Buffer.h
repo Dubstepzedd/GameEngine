@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "engine/errors/Assert.h"
+#include "engine/helpers/Assert.h"
 
 enum class ShaderDataType {
 	FLOAT, FLOAT2, FLOAT3, MAT3, MAT4, INT, INT2, INT3, BOOL 

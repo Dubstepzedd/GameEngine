@@ -19,10 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\core\Container.h" />
-    <ClInclude Include="src\engine\errors\Assert.h" />
+    <ClInclude Include="src\engine\core\Application.h" />
+    <ClInclude Include="src\engine\events\Event.h" />
+    <ClInclude Include="src\engine\events\KeyCode.h" />
+    <ClInclude Include="src\engine\helpers\Assert.h" />
     <ClInclude Include="src\engine\gfx\camera\Camera.h" />
-    <ClInclude Include="src\engine\io\Listener.h" />
+    <ClInclude Include="src\engine\gfx\camera\PerspectiveCamera.h" />
+    <ClInclude Include="src\engine\gfx\camera\PerspectiveCameraController.h" />
+    <ClInclude Include="src\engine\helpers\TimeStep.h" />
+    <ClInclude Include="src\engine\events\Listener.h" />
     <ClInclude Include="src\engine\gfx\Renderer.h" />
     <ClInclude Include="src\engine\io\Resources.h" />
     <ClInclude Include="src\engine\gfx\Shader.h" />
@@ -30,10 +35,12 @@
     <ClInclude Include="src\engine\core\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\core\Container.cpp" />
+    <ClCompile Include="src\engine\core\Application.cpp" />
     <ClCompile Include="src\engine\core\GLManager.h" />
-    <ClCompile Include="src\engine\gfx\camera\Camera.cpp" />
-    <ClCompile Include="src\engine\io\Listener.cpp" />
+    <ClCompile Include="src\engine\events\KeyEvent.h" />
+    <ClCompile Include="src\engine\gfx\camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\engine\gfx\camera\PerspectiveCameraController.cpp" />
+    <ClCompile Include="src\engine\events\Listener.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\engine\gfx\Renderer.cpp" />
     <ClCompile Include="src\engine\io\Resources.cpp" />

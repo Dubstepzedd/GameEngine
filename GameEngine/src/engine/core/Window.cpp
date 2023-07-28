@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "engine/core/Window.h"
-#include "engine/io/Listener.h"
+#include "engine/events/Listener.h"
 #include <spdlog/spdlog.h>
 #include "engine/core/GLManager.h"
 
@@ -9,7 +9,7 @@
 int Window::start(const std::string name, const int w, const int h, bool vSync, bool isResizable) {
 
 
-    // 1 = EXIT_FAILURE. 0 = EXIT_SUCCESS. Exit as in from the function.
+    // 1 = EXIT_FAILURE.  0 = EXIT_SUCCESS. Exit as in from the function.
 
     // This will not allow for multiple windows. We might want this in the future, but right now it will cause issues.
     if (m_Window != nullptr && isRunning()) {
@@ -50,6 +50,7 @@ int Window::start(const std::string name, const int w, const int h, bool vSync, 
     /* Store the position for fullscreen toggle */
     glfwGetWindowPos(m_Window, &this->m_Pos.x, &this->m_Pos.y);
 
+    m_AspectRatio = (float)w / (float)h;
     setCallbacks();
 
     return 0;
@@ -122,10 +123,18 @@ void Window::setFullscreen(const bool value) {
     }
 }
 
+void Window::setAspectRatio(const int width, const int height) {
+    m_AspectRatio = (float)width / (float)height;
+    glfwSetWindowAspectRatio(m_Window, width, height);
+}
+
 int Window::getRefreshRate() {
     return this->m_VideoMode->refreshRate;
 }
 
+float Window::getAspectRatio() {
+    return m_AspectRatio;
+}
 
 int Window::getResolutionY() {
     return this->m_VideoMode->height;

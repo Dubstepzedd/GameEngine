@@ -15,7 +15,7 @@ public:
     }
 
     static bool initialize() {
-        spdlog::debug("Initalizing OpenGL.");
+        spdlog::info("Initalizing OpenGL.");
         Window::getInstance().makeContext();
 
         if (glewInit() != GLEW_OK) {
@@ -27,7 +27,7 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(GLManager::MessageCallback, 0);
-
+        glEnable(GL_DEPTH_TEST);
         return true;
     }
 };
