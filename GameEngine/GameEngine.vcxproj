@@ -22,6 +22,8 @@
     <ClInclude Include="src\engine\core\Application.h" />
     <ClInclude Include="src\engine\events\Event.h" />
     <ClInclude Include="src\engine\events\KeyCode.h" />
+    <ClInclude Include="src\engine\events\MouseCode.h" />
+    <ClInclude Include="src\engine\events\MouseEvent.h" />
     <ClInclude Include="src\engine\helpers\Assert.h" />
     <ClInclude Include="src\engine\gfx\camera\Camera.h" />
     <ClInclude Include="src\engine\gfx\camera\PerspectiveCamera.h" />
@@ -37,6 +39,7 @@
   <ItemGroup>
     <ClCompile Include="src\engine\core\Application.cpp" />
     <ClCompile Include="src\engine\core\GLManager.h" />
+    <ClCompile Include="src\engine\events\ApplicationEvent.h" />
     <ClCompile Include="src\engine\events\KeyEvent.h" />
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCameraController.cpp" />

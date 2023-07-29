@@ -15,6 +15,8 @@
     <ClInclude Include="src\engine\helpers\TimeStep.h" />
     <ClInclude Include="src\engine\events\Event.h" />
     <ClInclude Include="src\engine\events\KeyCode.h" />
+    <ClInclude Include="src\engine\events\MouseEvent.h" />
+    <ClInclude Include="src\engine\events\MouseCode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -29,6 +31,7 @@
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCameraController.cpp" />
     <ClCompile Include="src\engine\events\KeyEvent.h" />
+    <ClCompile Include="src\engine\events\ApplicationEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.glsl" />
