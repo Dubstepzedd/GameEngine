@@ -4,6 +4,7 @@
 #include <spdlog/spdlog.h>
 #include "engine/helpers/TimeStep.h"
 #include <functional>
+
 //TEMP
 #include "engine/gfx/Renderer.h"
 #include "engine/gfx/Shader.h"
@@ -11,6 +12,7 @@
 #include <cmath>
 #include "engine/gfx/camera/PerspectiveCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "engine/events/KeyCode.h"
 
 int Application::run() {
 
@@ -67,20 +69,20 @@ int Application::run() {
 
 		/* Handle F11 keybind for fullscreen [Move outside this .cpp file]*/
 		cd += dt.getMilliseconds();
-		if (Input::getInstance().isKeyPressed(GLFW_KEY_F11) && cd >= 500) {
+		if (Input::getInstance().isKeyPressed(Key::F11) && cd >= 500) {
 			Window::getInstance().setFullscreen(!Window::getInstance().isFullscreen());
 			cd = 0;
 		}
 			
 		
 		const float cameraSpeed = 0.05f; // adjust accordingly
-		if (Input::getInstance().isKeyPressed(GLFW_KEY_W))
+		if (Input::getInstance().isKeyPressed(Key::W))
 			camera.setPos(camera.getPos() += cameraSpeed * camera.getFront());
-		if (Input::getInstance().isKeyPressed(GLFW_KEY_S))
+		if (Input::getInstance().isKeyPressed(Key::S))
 			camera.setPos(camera.getPos() -= cameraSpeed * camera.getFront());
-		if (Input::getInstance().isKeyPressed(GLFW_KEY_A))
+		if (Input::getInstance().isKeyPressed(Key::A))
 			camera.setPos(camera.getPos() - glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
-		if (Input::getInstance().isKeyPressed(GLFW_KEY_D))
+		if (Input::getInstance().isKeyPressed(Key::D))
 			camera.setPos(camera.getPos() + glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
 	
 		//Update
@@ -105,9 +107,8 @@ int Application::run() {
 }
 
 void Application::onEvent(Event& event) {
-	//In order to do this, we need categories.
-	if (event.getCategory() == EventCategory::Keyboard) {
-		Input::getInstance().onEvent((KeyEvent&)event);
-	}
+	//Handle KeyBoard and Mouse input. This does not handle mouse movement, application events etc.
+	Input::getInstance().onEvent(event);
+	
 }
 

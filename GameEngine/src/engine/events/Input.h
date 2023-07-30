@@ -2,6 +2,7 @@
 #include "GLFW/glfw3.h"
 #include <glm/glm.hpp>
 #include "engine/events/KeyEvent.h"
+#include "engine/events/MouseEvent.h"
 
 class Input {
 
@@ -14,12 +15,13 @@ public:
     }
     Input(const Input&) = delete;
     void operator=(const Input&) = delete;
-    void onEvent(KeyEvent& e);
-    bool isKeyPressed(int key);
-
+    void onEvent(Event& e);
+    bool isKeyPressed(int key) const;
+    bool isButtonPressed(int button) const;
 private:
     Input() {}
-    bool keys[350]{};
+    bool m_Keys[350]{};
+    bool m_Buttons[10]{};
     glm::vec2 mPos{};
     
 
