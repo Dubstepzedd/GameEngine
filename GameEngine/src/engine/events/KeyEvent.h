@@ -6,6 +6,8 @@
 class KeyEvent : Event {
 public:
 	KeyCode getKeyCode() { return m_KeyCode; };
+	EVENT_CLASS_TYPE(None)
+	EVENT_CATEGORY(Keyboard);
 protected:
 	KeyEvent(const KeyCode key) : m_KeyCode(key) {}
 	KeyCode m_KeyCode;

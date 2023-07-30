@@ -23,7 +23,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(WindowResize);
-
+	EVENT_CATEGORY(Application);
 private:
 	float m_Height, m_Width;
 };
@@ -49,7 +49,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(FrameBufferChanged);
-
+	EVENT_CATEGORY(Application);
 private:
 	float m_Height, m_Width;
 };
@@ -67,7 +67,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(WindowClose)
-
+	EVENT_CATEGORY(Application);
 };
 
 class WindowMovedEvent : Event {
@@ -91,6 +91,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(WindowMoved);
+	EVENT_CATEGORY(Application);
 private:
 	float m_XPos, m_YPos;
 
@@ -109,6 +110,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(WindowFocus);
+	EVENT_CATEGORY(Application);
 private:
 	bool m_IsFocused;
 };

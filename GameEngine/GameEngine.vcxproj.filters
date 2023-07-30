@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="src\engine\events\Listener.h" />
+    <ClInclude Include="src\engine\events\Input.h" />
     <ClInclude Include="src\engine\gfx\Shader.h" />
     <ClInclude Include="src\engine\core\Window.h" />
     <ClInclude Include="src\engine\core\Application.h" />
@@ -24,7 +24,7 @@
     <ClCompile Include="src\engine\gfx\Shader.cpp" />
     <ClCompile Include="src\engine\core\Window.cpp" />
     <ClCompile Include="src\engine\core\Application.cpp" />
-    <ClCompile Include="src\engine\events\Listener.cpp" />
+    <ClCompile Include="src\engine\events\Input.cpp" />
     <ClCompile Include="src\engine\io\Resources.cpp" />
     <ClCompile Include="src\engine\gfx\Buffer.cpp" />
     <ClCompile Include="src\engine\gfx\Renderer.cpp" />

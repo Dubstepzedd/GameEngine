@@ -6,7 +6,8 @@
 class MouseButtonEvent : public Event {
 public:
 	MouseCode getMouseButton() const { return m_Button; }
-
+	EVENT_CLASS_TYPE(None);
+	EVENT_CATEGORY(Mouse);
 protected:
 	MouseButtonEvent(const MouseCode button)
 		: m_Button(button) {}
@@ -71,6 +72,7 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(MouseMoved);
+	EVENT_CATEGORY(Mouse);
 
 private:
 	float m_XPos, m_YPos;
@@ -93,6 +95,8 @@ public:
 	}
 
 	EVENT_CLASS_TYPE(MouseScrolled);
+	EVENT_CATEGORY(Mouse);
+
 private:
 	float m_ScrollAmount;
 };

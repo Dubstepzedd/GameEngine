@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "engine/core/Window.h"
-#include "engine/events/Listener.h"
 #include <spdlog/spdlog.h>
 #include "engine/core/GLManager.h"
 #include "engine/events/EventMessager.h"

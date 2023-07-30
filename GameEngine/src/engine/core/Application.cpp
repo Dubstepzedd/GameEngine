@@ -1,6 +1,6 @@
 #include "GL/glew.h"
 #include "engine/core/Application.h"
-#include "engine/events/Listener.h"
+#include "engine/events/Input.h"
 #include <spdlog/spdlog.h>
 #include "engine/helpers/TimeStep.h"
 #include <functional>
@@ -67,20 +67,20 @@ int Application::run() {
 
 		/* Handle F11 keybind for fullscreen [Move outside this .cpp file]*/
 		cd += dt.getMilliseconds();
-		if (Listener::getInstance().isKeyPressed(GLFW_KEY_F11) && cd >= 500) {
+		if (Input::getInstance().isKeyPressed(GLFW_KEY_F11) && cd >= 500) {
 			Window::getInstance().setFullscreen(!Window::getInstance().isFullscreen());
 			cd = 0;
 		}
 			
 		
 		const float cameraSpeed = 0.05f; // adjust accordingly
-		if (Listener::getInstance().isKeyPressed(GLFW_KEY_W))
+		if (Input::getInstance().isKeyPressed(GLFW_KEY_W))
 			camera.setPos(camera.getPos() += cameraSpeed * camera.getFront());
-		if (Listener::getInstance().isKeyPressed(GLFW_KEY_S))
+		if (Input::getInstance().isKeyPressed(GLFW_KEY_S))
 			camera.setPos(camera.getPos() -= cameraSpeed * camera.getFront());
-		if (Listener::getInstance().isKeyPressed(GLFW_KEY_A))
+		if (Input::getInstance().isKeyPressed(GLFW_KEY_A))
 			camera.setPos(camera.getPos() - glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
-		if (Listener::getInstance().isKeyPressed(GLFW_KEY_D))
+		if (Input::getInstance().isKeyPressed(GLFW_KEY_D))
 			camera.setPos(camera.getPos() + glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
 	
 		//Update
@@ -105,6 +105,9 @@ int Application::run() {
 }
 
 void Application::onEvent(Event& event) {
-	std::cout << event.toString() << std::endl;
+	//In order to do this, we need categories.
+	if (event.getCategory() == EventCategory::Keyboard) {
+		Input::getInstance().onEvent((KeyEvent&)event);
+	}
 }
 
