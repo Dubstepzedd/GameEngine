@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\core\Application.h" />
+    <ClInclude Include="src\engine\events\EventMessager.h" />
     <ClInclude Include="src\engine\events\Event.h" />
     <ClInclude Include="src\engine\events\KeyCode.h" />
     <ClInclude Include="src\engine\events\MouseCode.h" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\core\Application.cpp" />
+    <ClCompile Include="src\engine\events\EventMessager.cpp" />
     <ClCompile Include="src\engine\core\GLManager.h" />
     <ClCompile Include="src\engine\events\ApplicationEvent.h" />
     <ClCompile Include="src\engine\events\KeyEvent.h" />

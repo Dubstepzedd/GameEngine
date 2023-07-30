@@ -3,7 +3,7 @@
 #include "engine/events/Listener.h"
 #include <spdlog/spdlog.h>
 #include "engine/helpers/TimeStep.h"
-
+#include <functional>
 //TEMP
 #include "engine/gfx/Renderer.h"
 #include "engine/gfx/Shader.h"
@@ -23,6 +23,8 @@ int Application::run() {
 		spdlog::error("Failed to start Window instance.");
 		return 1;
 	}
+	auto fp = std::bind(&Application::onEvent, this, std::placeholders::_1);
+	Window::getInstance().setOnEvent(fp);
 
 	//!!!!
 	/* We should probably make this multithreaded. When moving the window the updates stop.
@@ -70,6 +72,7 @@ int Application::run() {
 			cd = 0;
 		}
 			
+		
 		const float cameraSpeed = 0.05f; // adjust accordingly
 		if (Listener::getInstance().isKeyPressed(GLFW_KEY_W))
 			camera.setPos(camera.getPos() += cameraSpeed * camera.getFront());
@@ -99,5 +102,9 @@ int Application::run() {
 	glfwTerminate();
 	return 0;
 
+}
+
+void Application::onEvent(Event& event) {
+	std::cout << event.toString() << std::endl;
 }
 

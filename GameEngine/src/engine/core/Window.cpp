@@ -4,7 +4,7 @@
 #include "engine/events/Listener.h"
 #include <spdlog/spdlog.h>
 #include "engine/core/GLManager.h"
-
+#include "engine/events/EventMessager.h"
 
 int Window::start(const std::string name, const int w, const int h, bool vSync, bool isResizable) {
 
@@ -51,7 +51,6 @@ int Window::start(const std::string name, const int w, const int h, bool vSync, 
     glfwGetWindowPos(m_Window, &this->m_Pos.x, &this->m_Pos.y);
 
     m_AspectRatio = (float)w / (float)h;
-    setCallbacks();
 
     return 0;
 }
@@ -62,12 +61,9 @@ void Window::setHints(const bool isResizable) {
     glfwWindowHint(GLFW_RESIZABLE, isResizable);
 }
 
-void Window::setCallbacks() {
+void Window::setOnEvent(std::function<void(Event&)> func) {
     spdlog::debug("Setting Window callbacks.");
-    glfwSetFramebufferSizeCallback(m_Window, Window::onBufferUpdate);
-    glfwSetKeyCallback(m_Window, Listener::key_callback);
-    glfwSetMouseButtonCallback(m_Window, Listener::mouse_button_callback);
-    glfwSetCursorPosCallback(m_Window, Listener::cursor_position_callback);
+    EventMessager::getInstance().setOnEvent(m_Window, func);
 }
 
 void Window::swapBuffers() {

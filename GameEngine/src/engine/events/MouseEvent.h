@@ -32,6 +32,7 @@ public:
 };
 
 class MouseButtonReleasedEvent : MouseButtonEvent {
+public:
 	MouseButtonReleasedEvent(const MouseCode button) : MouseButtonEvent(button) {
 
 	}
@@ -40,7 +41,7 @@ class MouseButtonReleasedEvent : MouseButtonEvent {
 	{
 		std::stringstream ss;
 
-		ss << "[MouseButtonPressedEvent]: MouseCode: " << m_Button;
+		ss << "[MouseButtonReleasedEvent]: MouseCode: " << m_Button;
 		return ss.str();
 	}
 
@@ -61,6 +62,14 @@ public:
 		return m_YPos;
 	}
 
+	std::string toString() const override
+	{
+		std::stringstream ss;
+
+		ss << "[MouseMovedEvent]: Position: (" << m_XPos << ", " << m_YPos << ")";
+		return ss.str();
+	}
+
 	EVENT_CLASS_TYPE(MouseMoved);
 
 private:
@@ -73,6 +82,14 @@ public:
 	
 	float getScroll() const {
 		return m_ScrollAmount;
+	}
+
+	std::string toString() const override
+	{
+		std::stringstream ss;
+
+		ss << "[MouseScrolledEvent]: Scroll: " << m_ScrollAmount;
+		return ss.str();
 	}
 
 	EVENT_CLASS_TYPE(MouseScrolled);

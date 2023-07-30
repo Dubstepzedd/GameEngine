@@ -14,22 +14,6 @@ void Listener::key_callback(GLFWwindow* window, int key, int scancode, int actio
 	}
 }
 
-/* Mouse listener */
-void Listener::cursor_position_callback(GLFWwindow* window, double xPos, double yPos) {
-	Listener::getInstance().mPos.x = (float)xPos;
-	Listener::getInstance().mPos.y = (float)yPos;
-}
-
-void Listener::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-
-	if (action == GLFW_PRESS) {
-		Listener::getInstance().buttons[button] = true;
-	}
-	else if (action == GLFW_RELEASE) {
-		Listener::getInstance().buttons[button] = false;
-	}
-}
-
 
 /* Helpers, can be getters/setters */
 bool Listener::isKeyPressed(int key) {

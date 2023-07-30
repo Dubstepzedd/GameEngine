@@ -3,6 +3,9 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include "engine/events/Event.h"
+#include "engine/events/ApplicationEvent.h"
+#include <functional>
 
 class Window {
 
@@ -22,6 +25,7 @@ public:
 	void destroy();
 	void close();
 	void swapBuffers();
+	void setOnEvent(std::function<void(Event&)> func);
 
 	void setSize(const int width, const int height);
 	void setVSync(const bool vSync);
@@ -38,9 +42,11 @@ public:
 	int getResolutionX();
 	glm::dvec2 getSize();
 	
-	
 private:
-	Window() {};
+	void setHints(const bool isResizable);
+
+private:
+	Window() = default;
 	glm::ivec2 m_WSize{};
 	glm::ivec2 m_Pos{};
 	GLFWwindow* m_Window = nullptr;
@@ -50,12 +56,4 @@ private:
 	bool m_Fullscreen = false;
 	float m_AspectRatio = 0;
 
-	void setHints(const bool isResizable);
-	void setCallbacks();
-	static void onBufferUpdate(GLFWwindow* window, int width, int height) {
-		Window::getInstance().setAspectRatio(width, height);
-		glViewport(0, 0, width, height);
-	}
-
 };
-

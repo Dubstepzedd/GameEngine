@@ -5,7 +5,7 @@
 //This structure takes huge inspiration from The Cherno's Hazel Event system. I have never built one before an decided to go for a system that I know will work. 
 enum class EventType {
 	None = 0,
-	WindowClose, WindowFocus, WindowMoved, WindowResize,
+	WindowClose, WindowFocus, WindowMoved, WindowResize,FrameBufferChanged,
 	KeyPressed, KeyReleased,
 	MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 
