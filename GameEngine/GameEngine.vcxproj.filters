@@ -8,7 +8,7 @@
     <ClInclude Include="src\engine\io\Resources.h" />
     <ClInclude Include="src\engine\gfx\Buffer.h" />
     <ClInclude Include="src\engine\gfx\Renderer.h" />
-    <ClInclude Include="src\engine\helpers\Assert.h" />
+    <ClInclude Include="src\engine\helpers\Core.h" />
     <ClInclude Include="src\engine\gfx\camera\Camera.h" />
     <ClInclude Include="src\engine\gfx\camera\PerspectiveCamera.h" />
     <ClInclude Include="src\engine\gfx\camera\PerspectiveCameraController.h" />
@@ -18,9 +18,11 @@
     <ClInclude Include="src\engine\events\MouseEvent.h" />
     <ClInclude Include="src\engine\events\MouseCode.h" />
     <ClInclude Include="src\engine\events\EventMessager.h" />
+    <ClInclude Include="src\engine\core\Layer.h" />
+    <ClInclude Include="src\engine\core\LayerStack.h" />
+    <ClInclude Include="src\Engine.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\engine\gfx\Shader.cpp" />
     <ClCompile Include="src\engine\core\Window.cpp" />
     <ClCompile Include="src\engine\core\Application.cpp" />
@@ -28,12 +30,13 @@
     <ClCompile Include="src\engine\io\Resources.cpp" />
     <ClCompile Include="src\engine\gfx\Buffer.cpp" />
     <ClCompile Include="src\engine\gfx\Renderer.cpp" />
-    <ClCompile Include="src\engine\core\GLManager.h" />
+    <ClCompile Include="src\engine\helpers\GLManager.h" />
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\engine\gfx\camera\PerspectiveCameraController.cpp" />
     <ClCompile Include="src\engine\events\KeyEvent.h" />
     <ClCompile Include="src\engine\events\ApplicationEvent.h" />
     <ClCompile Include="src\engine\events\EventMessager.cpp" />
+    <ClCompile Include="src\engine\core\LayerStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\shader.glsl" />

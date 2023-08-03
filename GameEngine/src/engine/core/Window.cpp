@@ -2,7 +2,7 @@
 #include <iostream>
 #include "engine/core/Window.h"
 #include <spdlog/spdlog.h>
-#include "engine/core/GLManager.h"
+#include "engine/helpers/GLManager.h"
 #include "engine/events/EventMessager.h"
 
 int Window::start(const std::string name, const int w, const int h, bool vSync, bool isResizable) {

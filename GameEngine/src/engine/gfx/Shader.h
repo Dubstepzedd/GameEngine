@@ -3,13 +3,14 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-struct ShaderProgramSource {
+
+struct  ShaderProgramSource {
 	std::string vertexSrc;
 	std::string fragmentSrc;
 };
 
 //TODO: Would be nice to parse two different .glsl files instead of just one. Some like it that way
-class Shader {
+class  Shader {
 	
 public:
 	Shader(const std::string& path);
@@ -20,8 +21,6 @@ public:
 
 	void bind() const;
 	void unbind() const;
-
-	/** Uniforms **/
 	void setFloat4Uniform(const std::string& name, const glm::vec4 vector) const;
 	void setFloat3Uniform(const std::string& name, const glm::vec3 vector) const;
 	void setFloat2Uniforms(const std::string& name, const glm::vec2 vector) const;

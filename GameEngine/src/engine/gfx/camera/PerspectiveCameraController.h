@@ -1,9 +1,10 @@
 #pragma once
+
 #include "engine/gfx/camera/PerspectiveCamera.h"
 #include <glm/glm.hpp>
 #include "engine/helpers/TimeStep.h"
 
-class PerspectiveCameraController {
+class  PerspectiveCameraController {
 
 public:
 	PerspectiveCameraController(const glm::vec3 pos) : m_Camera(pos) {}

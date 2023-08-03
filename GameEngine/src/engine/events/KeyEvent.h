@@ -1,9 +1,11 @@
 #pragma once
+
+
 #include "engine/events/Event.h"
 #include "engine/events/KeyCode.h"
 #include <sstream>
 
-class KeyEvent : Event {
+class  KeyEvent : Event {
 public:
 	KeyCode getKeyCode() { return m_KeyCode; };
 	EVENT_CLASS_TYPE(None)
@@ -13,7 +15,7 @@ protected:
 	KeyCode m_KeyCode;
 };
 
-class KeyPressedEvent : KeyEvent {
+class  KeyPressedEvent : KeyEvent {
 public:
 	KeyPressedEvent(const KeyCode key, const bool isRepeat) : KeyEvent(key), m_IsRepeat(isRepeat) {
 
@@ -34,7 +36,7 @@ private:
 	bool m_IsRepeat;
 };
 
-class KeyReleasedEvent : KeyEvent {
+class  KeyReleasedEvent : KeyEvent {
 
 public:
 	KeyReleasedEvent(const KeyCode key) : KeyEvent(key) {

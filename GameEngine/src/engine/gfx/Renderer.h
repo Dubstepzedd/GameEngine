@@ -1,8 +1,10 @@
 #pragma once
+
+
 #include "engine/gfx/Buffer.h"
 #include "engine/gfx/Shader.h"
 
-class Renderer {
+class  Renderer {
 
 public:
 	static void draw(const VertexArray& vArr, const IndexBuffer& iBuff);

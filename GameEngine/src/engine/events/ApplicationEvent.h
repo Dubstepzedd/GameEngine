@@ -4,13 +4,13 @@
 
 class WindowResizeEvent : Event {
 public:
-	WindowResizeEvent(const float width, const float height) : m_Width(width), m_Height(height) {}
+	WindowResizeEvent(const int width, const int height) : m_Width(width), m_Height(height) {}
 	
-	float getWidth() const {
+	int getWidth() const {
 		return m_Width;
 	}
 	
-	float getHeight() const {
+	int getHeight() const {
 		return m_Height;
 	}
 
@@ -25,18 +25,18 @@ public:
 	EVENT_CLASS_TYPE(WindowResize);
 	EVENT_CATEGORY(Application);
 private:
-	float m_Height, m_Width;
+	int m_Height, m_Width;
 };
 
 class FrameBufferChangedEvent : Event {
 public:
-	FrameBufferChangedEvent(const float width, const float height) : m_Width(width), m_Height(height) {}
+	FrameBufferChangedEvent(const int width, const int height) : m_Width(width), m_Height(height) {}
 
-	float getWidth() const {
+	int getWidth() const {
 		return m_Width;
 	}
 
-	float getHeight() const {
+	int getHeight() const {
 		return m_Height;
 	}
 
@@ -51,7 +51,7 @@ public:
 	EVENT_CLASS_TYPE(FrameBufferChanged);
 	EVENT_CATEGORY(Application);
 private:
-	float m_Height, m_Width;
+	int m_Height, m_Width;
 };
 
 class WindowCloseEvent : Event {

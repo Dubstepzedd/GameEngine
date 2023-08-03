@@ -1,10 +1,12 @@
 #pragma once
+
+
 #include "GLFW/glfw3.h"
 #include <glm/glm.hpp>
 #include "engine/events/KeyEvent.h"
 #include "engine/events/MouseEvent.h"
 
-class Input {
+class  Input {
 
 public:
     static Input& getInstance()

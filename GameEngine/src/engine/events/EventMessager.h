@@ -1,4 +1,6 @@
 #pragma once
+
+
 #include "engine/events/Event.h"
 #include "engine/events/ApplicationEvent.h"
 #include "engine/events/MouseEvent.h"
@@ -6,7 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 
-class EventMessager {
+class  EventMessager {
 
 public:
 	static EventMessager& getInstance() {

@@ -27,7 +27,7 @@ void EventMessager::framebuffer_size_callback(GLFWwindow* window, int width, int
 
 /* Mouse listener */
 void EventMessager::cursor_position_callback(GLFWwindow* window, double xPos, double yPos) {
-	MouseMovedEvent e = MouseMovedEvent(xPos, yPos);
+	MouseMovedEvent e = MouseMovedEvent((float)xPos, (float)yPos);
 
 	getInstance().m_OnEvent((Event&)e);
 }
@@ -63,7 +63,7 @@ void EventMessager::key_callback(GLFWwindow* window, int key, int scancode, int 
 
 //Does not support x scroll atm, but it is barely used anywhere.
 void EventMessager::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-	MouseScrolledEvent e = MouseScrolledEvent(yoffset);
+	MouseScrolledEvent e = MouseScrolledEvent((float)yoffset);
 
 	getInstance().m_OnEvent((Event&)e);
 }

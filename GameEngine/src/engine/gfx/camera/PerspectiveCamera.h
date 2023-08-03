@@ -1,6 +1,8 @@
 #pragma once
+
+
 #include "engine/gfx/camera/Camera.h"
-class PerspectiveCamera : public Camera {
+class  PerspectiveCamera : public Camera {
 
 public:
 	PerspectiveCamera(const glm::vec3& pos, const float fov = 45.0f, const float nearPlane = 1.0f , const float farPlane = 100.0f) : Camera(pos), m_Fov(fov), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_Up(glm::vec3(0.0f, 1.0f, 0.0f)) {

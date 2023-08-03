@@ -1,13 +1,16 @@
 #pragma once
+
+
 #include "engine/events/MouseCode.h"
 #include "engine/events/Event.h"
 #include <sstream>
 
-class MouseButtonEvent : public Event {
+class  MouseButtonEvent : public Event {
 public:
 	MouseCode getMouseButton() const { return m_Button; }
 	EVENT_CLASS_TYPE(None);
-	EVENT_CATEGORY(Mouse);
+	EVENT_CATEGORY(MouseInput);
+
 protected:
 	MouseButtonEvent(const MouseCode button)
 		: m_Button(button) {}
@@ -15,7 +18,7 @@ protected:
 	MouseCode m_Button;
 };
 
-class MouseButtonPressedEvent : MouseButtonEvent {
+class  MouseButtonPressedEvent : MouseButtonEvent {
 public:
 	MouseButtonPressedEvent(const MouseCode button) : MouseButtonEvent(button) {
 
@@ -32,7 +35,7 @@ public:
 
 };
 
-class MouseButtonReleasedEvent : MouseButtonEvent {
+class  MouseButtonReleasedEvent : MouseButtonEvent {
 public:
 	MouseButtonReleasedEvent(const MouseCode button) : MouseButtonEvent(button) {
 
@@ -50,7 +53,7 @@ public:
 
 };
 
-class MouseMovedEvent : Event {
+class  MouseMovedEvent : Event {
 public:
 	MouseMovedEvent(const float x, const float y) : m_XPos(x), m_YPos(y) {
 	}
@@ -78,7 +81,7 @@ private:
 	float m_XPos, m_YPos;
 };
 
-class MouseScrolledEvent : Event {
+class  MouseScrolledEvent : Event {
 public:
 	MouseScrolledEvent(const float scrollAmount) : m_ScrollAmount(scrollAmount) {}
 	

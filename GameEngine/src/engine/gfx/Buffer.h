@@ -1,11 +1,13 @@
 #pragma once
+
+#include "engine/helpers/Core.h"
 #include "GL/glew.h"
 #include <string>
 #include <vector>
 #include <iostream>
-#include "engine/helpers/Assert.h"
 
-enum class ShaderDataType {
+
+enum class  ShaderDataType {
 	FLOAT, FLOAT2, FLOAT3, MAT3, MAT4, INT, INT2, INT3, BOOL 
 };
 
@@ -68,7 +70,7 @@ static GLenum getOpenGLType(const ShaderDataType type) {
 
 
 
-struct BufferElement {
+struct  BufferElement {
 	std::string Name;
 	uint32_t Size;
 	ShaderDataType Type;
@@ -79,7 +81,7 @@ struct BufferElement {
 
 };
 
-class BufferLayout {
+class  BufferLayout {
 public:
 	BufferLayout(const std::initializer_list<BufferElement>& elements) : m_Elements(elements) {
 		
@@ -97,7 +99,7 @@ private:
 
 };
 
-class VertexBuffer {
+class  VertexBuffer {
 public:
 
 	VertexBuffer(std::initializer_list<float> vertexData) {
@@ -125,7 +127,7 @@ private:
 	uint32_t m_Vbo;
 };
 
-class IndexBuffer {
+class  IndexBuffer {
 public:
 	IndexBuffer(std::initializer_list<unsigned int> indices) : m_Count(indices.size()) {
 		glGenBuffers(1, &m_Ibo);
@@ -149,7 +151,7 @@ private:
 	size_t m_Count;
 };
 
-class VertexArray {
+class  VertexArray {
 public:
 	VertexArray() {
 		glGenVertexArrays(1, &m_Vao);

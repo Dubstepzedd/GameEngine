@@ -1,18 +1,19 @@
 #pragma once
 
-//Libraries
+#include "engine/helpers/Core.h"
 #include "engine/core/Window.h"
-#include <atomic>
-#include <time.h>
-#include <thread>
 #include "engine/events/Event.h"
+#include "engine/core/LayerStack.h"
 
-class Application {
+
+class ENGINE_API Application {
 
 public:
+	Application();
+	virtual ~Application() = default;
 	int run();
 	void onEvent(Event& e);
 private:
-	std::atomic<bool> isRender = false;
 	float m_LastFrameTime = 0;
+	LayerStack m_LayerStack;
 };

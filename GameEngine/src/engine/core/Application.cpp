@@ -14,24 +14,32 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "engine/events/KeyCode.h"
 
-int Application::run() {
+//Memory leak if we don't remove this?
+Application* m_Application = nullptr;
+
+Application::Application() {
+	if (m_Application != nullptr) {
+		spdlog::error("Application instance already exists.");
+		throw std::bad_function_call();
+	}
 
 	spdlog::set_level(spdlog::level::debug); //Displays debug messages
 	spdlog::set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
 	spdlog::info("[OpenGL Version] {}", glfwGetVersionString());
+
+	m_Application = this;
+}
+
+int Application::run() {
 
 	int code = Window::getInstance().start("Test", 640, 640, false, true);
 	if (code == 1) {
 		spdlog::error("Failed to start Window instance.");
 		return 1;
 	}
+
 	auto fp = std::bind(&Application::onEvent, this, std::placeholders::_1);
 	Window::getInstance().setOnEvent(fp);
-
-	//!!!!
-	/* We should probably make this multithreaded. When moving the window the updates stop.
-	But we do not want the render thread to render before updates. We need to move glfwMakeContext to the render thread as well.*/
-
 
 	VertexArray vArr = VertexArray();
 	BufferLayout layout = { 
@@ -74,7 +82,10 @@ int Application::run() {
 			cd = 0;
 		}
 			
-		
+		for (Layer* layer : m_LayerStack) {
+			layer->onUpdate(dt);
+		}
+
 		const float cameraSpeed = 0.05f; // adjust accordingly
 		if (Input::getInstance().isKeyPressed(Key::W))
 			camera.setPos(camera.getPos() += cameraSpeed * camera.getFront());
@@ -107,8 +118,12 @@ int Application::run() {
 }
 
 void Application::onEvent(Event& event) {
-	//Handle KeyBoard and Mouse input. This does not handle mouse movement, application events etc.
+	//Handle KeyBoard and Mouse button input.
 	Input::getInstance().onEvent(event);
+
+	for (Layer* layer : m_LayerStack) {
+		layer->onEvent(event);
+	}
 	
 }
 
