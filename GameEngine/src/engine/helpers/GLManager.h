@@ -1,6 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <spdlog/spdlog.h>
 #include "engine/core/Window.h"
 
@@ -16,10 +17,11 @@ public:
     }
 
     static bool initialize() {
-        spdlog::info("Initalizing OpenGL.");
+        spdlog::info("Initializing OpenGL.");
         Window::getInstance().makeContext();
 
-        if (glewInit() != GLEW_OK) {
+        int version = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        if (version == 0) {
             spdlog::error("Failed to initialize GLEW.");
             return false;
         }

@@ -1,7 +1,7 @@
 #pragma once
 
+#include <glad/glad.h>
 #include "engine/helpers/Core.h"
-#include "GL/glew.h"
 #include <string>
 #include <vector>
 #include <iostream>

@@ -6,7 +6,7 @@
 #include "engine/core/LayerStack.h"
 
 
-class ENGINE_API Application {
+class Application {
 
 public:
 	Application();

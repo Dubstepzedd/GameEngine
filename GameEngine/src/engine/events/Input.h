@@ -1,10 +1,9 @@
 #pragma once
 
-
-#include "GLFW/glfw3.h"
 #include <glm/glm.hpp>
 #include "engine/events/KeyEvent.h"
 #include "engine/events/MouseEvent.h"
+#include "GLFW/glfw3.h"
 
 class  Input {
 

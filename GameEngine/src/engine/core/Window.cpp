@@ -1,7 +1,7 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
 #include "engine/core/Window.h"
-#include <spdlog/spdlog.h>
+#include "spdlog/spdlog.h"
 #include "engine/helpers/GLManager.h"
 #include "engine/events/EventMessager.h"
 

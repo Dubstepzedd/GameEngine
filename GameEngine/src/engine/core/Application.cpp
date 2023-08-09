@@ -1,4 +1,3 @@
-#include "GL/glew.h"
 #include "engine/core/Application.h"
 #include "engine/events/Input.h"
 #include <spdlog/spdlog.h>
@@ -60,7 +59,8 @@ int Application::run() {
 		1, 2, 3    // second triangle
 	};
 
-	Shader shader = Shader("res/shaders/shader.glsl");
+	//TODO Improve Resources class to have relative paths.
+	Shader shader = Shader("C:/Programming/GameEngine/GameEngine/res/shaders/shader.glsl");
 	PerspectiveCamera camera = PerspectiveCamera(glm::vec3(0, 0, 3));
 	shader.bind();
 	camera.updateProj(shader);

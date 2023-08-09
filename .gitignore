@@ -4,9 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Custom ignored files & folders.
-GameEngine/bin/
-GameEngine/bin-int/
-
+GameEngine/out/build/
+GameEngine/libs/submodules/
 # User-specific files
 *.rsuser
 *.suo
