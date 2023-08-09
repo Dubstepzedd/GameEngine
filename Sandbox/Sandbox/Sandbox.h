@@ -4,5 +4,11 @@
 #pragma once
 
 #include <iostream>
+#include "Engine.h"
 
-// TODO: Reference additional headers your program requires here.
+class SandboxApp: public Application {
+public:
+
+private:
+
+};

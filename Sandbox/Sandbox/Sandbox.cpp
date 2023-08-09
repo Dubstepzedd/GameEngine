@@ -3,10 +3,13 @@
 
 #include "Sandbox.h"
 #include <Engine.h>
+#include "TestLayer.h"
 
 int main()
 {
-	Application* app = new Application();
+	TestLayer* layer = new TestLayer();
+	SandboxApp* app = new SandboxApp();
 	app->run();
+	app->pushLayer((Layer*)layer);
 	delete app;
 }

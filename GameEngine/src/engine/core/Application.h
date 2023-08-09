@@ -13,6 +13,8 @@ public:
 	virtual ~Application() = default;
 	int run();
 	void onEvent(Event& e);
+	void pushLayer(Layer* layer) { m_LayerStack.pushLayer(layer); }
+	void removeLayer(Layer* layer) { m_LayerStack.popLayer(layer); }
 private:
 	float m_LastFrameTime = 0;
 	LayerStack m_LayerStack;
