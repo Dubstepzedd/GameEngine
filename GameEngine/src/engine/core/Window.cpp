@@ -5,7 +5,7 @@
 #include "engine/helpers/GLManager.h"
 #include "engine/events/EventMessager.h"
 
-int Window::start(const std::string name, const int w, const int h, bool vSync, bool isResizable) {
+int Window::create(const std::string name, const int w, const int h, bool vSync, bool isResizable) {
 
 
     // 1 = EXIT_FAILURE.  0 = EXIT_SUCCESS. Exit as in from the function.

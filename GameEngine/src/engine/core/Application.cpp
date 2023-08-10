@@ -27,45 +27,20 @@ Application::Application() {
 	spdlog::info("[OpenGL Version] {}", glfwGetVersionString());
 
 	m_Application = this;
+
+	int code = Window::getInstance().create("Test", 640, 640, false, true);
+	if (code == 1) {
+		spdlog::error("Failed to start Window instance.");
+		ENGINE_ASSERT("Failed to create Window instance.");
+	}
 }
 
 int Application::run() {
 
-	int code = Window::getInstance().start("Test", 640, 640, false, true);
-	if (code == 1) {
-		spdlog::error("Failed to start Window instance.");
-		return 1;
-	}
-
 	auto fp = std::bind(&Application::onEvent, this, std::placeholders::_1);
 	Window::getInstance().setOnEvent(fp);
 
-	VertexArray vArr = VertexArray();
-	BufferLayout layout = { 
-		{ShaderDataType::FLOAT3, "aPos"},
-		{ShaderDataType::FLOAT3, "aColor"}
-	};
-
-	VertexBuffer buff = {
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f,0.0f, // top right
-		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f, 0.0f,0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 0.0f,0.0f  // top left 
-	};
-	vArr.setBuffer(buff, layout);
-
-	IndexBuffer iBuff = { 
-		0, 1, 3,   // first triangle
-		1, 2, 3    // second triangle
-	};
-
-	//TODO Improve Resources class to have relative paths.
-	Shader shader = Shader("C:/Programming/GameEngine/GameEngine/res/shaders/shader.glsl");
-	PerspectiveCamera camera = PerspectiveCamera(glm::vec3(0, 0, 3));
-	shader.bind();
-	camera.updateProj(shader);
-
-	// TEMP CODE END
+	
 	float cd = 0;
 	while (Window::getInstance().isRunning()) {
 		float time = (float)glfwGetTime();
@@ -86,29 +61,16 @@ int Application::run() {
 			layer->onUpdate(dt);
 		}
 
-		const float cameraSpeed = 0.05f; // adjust accordingly
-		if (Input::getInstance().isKeyPressed(Key::W))
-			camera.setPos(camera.getPos() += cameraSpeed * camera.getFront());
-		if (Input::getInstance().isKeyPressed(Key::S))
-			camera.setPos(camera.getPos() -= cameraSpeed * camera.getFront());
-		if (Input::getInstance().isKeyPressed(Key::A))
-			camera.setPos(camera.getPos() - glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
-		if (Input::getInstance().isKeyPressed(Key::D))
-			camera.setPos(camera.getPos() + glm::normalize(glm::cross(camera.getFront(), camera.getUp())) * cameraSpeed);
 	
 		//Update
 		Window::getInstance().swapBuffers();
 		Renderer::clear();
-		camera.updateView(shader);
-		Renderer::draw(vArr, iBuff);
 		
 	
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		
 
 	}
-	//TEMP
-	shader.unbind();
 
 	/* Destroy objects and so fourth. */
 	Window::getInstance().destroy();

@@ -19,7 +19,7 @@ public:
 	Window(const Window&) = delete;
 	void operator=(const Window&) = delete;
 
-	int start(const std::string name, const int w, const int h,  bool vSync, bool isResizable);
+	int create(const std::string name, const int w, const int h,  bool vSync, bool isResizable);
 	void makeContext();
 	void destroy();
 	void close();

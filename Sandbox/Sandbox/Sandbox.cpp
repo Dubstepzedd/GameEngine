@@ -9,7 +9,7 @@ int main()
 {
 	TestLayer* layer = new TestLayer();
 	SandboxApp* app = new SandboxApp();
+	app->pushLayer((Layer*)layer); //OpenGL is not initilized and this causes a crash i believe
 	app->run();
-	app->pushLayer((Layer*)layer);
 	delete app;
 }
