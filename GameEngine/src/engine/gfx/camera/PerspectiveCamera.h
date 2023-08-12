@@ -9,6 +9,7 @@ public:
 		m_Near = nearPlane;
 		m_Far = farPlane;
 	};
+
 	void updateProj(const Shader& shader);
 
 	void updateView(const Shader& shader);
@@ -19,6 +20,9 @@ public:
 	glm::vec3 getUp() {
 		return m_Up;
 	}
+
+	void setFront(glm::vec3& front) { m_Front = front; }
+	void setUp(glm::vec3& up) { m_Up = up; }
 
 private:
 	float m_Fov;

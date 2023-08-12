@@ -1,17 +1,5 @@
 #include "engine/core/Application.h"
-#include "engine/events/Input.h"
-#include <spdlog/spdlog.h>
-#include "engine/helpers/TimeStep.h"
-#include <functional>
 
-//TEMP
-#include "engine/gfx/Renderer.h"
-#include "engine/gfx/Shader.h"
-#include "engine/gfx/Buffer.h"
-#include <cmath>
-#include "engine/gfx/camera/PerspectiveCamera.h"
-#include <glm/gtc/matrix_transform.hpp>
-#include "engine/events/KeyCode.h"
 
 //Memory leak if we don't remove this?
 Application* m_Application = nullptr;
@@ -37,8 +25,8 @@ Application::Application() {
 
 int Application::run() {
 
-	auto fp = std::bind(&Application::onEvent, this, std::placeholders::_1);
-	Window::getInstance().setOnEvent(fp);
+	auto func = std::bind(&Application::onEvent, this, std::placeholders::_1);
+	Window::getInstance().setOnEvent(func);
 
 	
 	float cd = 0;

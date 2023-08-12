@@ -37,29 +37,20 @@ void TestLayer::onAttach() {
 
 	//TODO Improve Resources class to have relative paths.
 	m_Shader = new Shader("C:/Programming/GameEngine/GameEngine/res/shaders/shader.glsl");
-	m_Camera = new PerspectiveCamera(glm::vec3(0, 0, 3));
 	m_Shader->bind();
-	m_Camera->updateProj(*m_Shader);
+	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3), *m_Shader);
+	
 
 	std::cout << "Attach" << std::endl;
 
 }
 
 void TestLayer::onUpdate(TimeStep dt) {
-	const float cameraSpeed = 0.05f; // adjust accordingly
-	if (Input::getInstance().isKeyPressed(Key::W))
-		m_Camera->setPos(m_Camera->getPos() += cameraSpeed * m_Camera->getFront());
-	if (Input::getInstance().isKeyPressed(Key::S))
-		m_Camera->setPos(m_Camera->getPos() -= cameraSpeed * m_Camera->getFront());
-	if (Input::getInstance().isKeyPressed(Key::A))
-		m_Camera->setPos(m_Camera->getPos() - glm::normalize(glm::cross(m_Camera->getFront(), m_Camera->getUp())) * cameraSpeed);
-	if (Input::getInstance().isKeyPressed(Key::D))
-		m_Camera->setPos(m_Camera->getPos() + glm::normalize(glm::cross(m_Camera->getFront(), m_Camera->getUp())) * cameraSpeed);
-
-	m_Camera->updateView(*m_Shader);
+	
 	Renderer::draw(*m_VertexArr, *m_IndexBuff);
+	m_Camera->onUpdate(dt);
 }
 
 void TestLayer::onEvent(Event& event) {
-
+	m_Camera->onEvent(event);
 }

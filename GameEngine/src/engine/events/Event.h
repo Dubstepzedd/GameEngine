@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include <functional>
 //This event structure takes huge inspiration from The Cherno's Hazel Event system. I have never built one before an decided to go for a system that I know will work. 
 
 enum class  EventType {
@@ -44,10 +44,10 @@ class  EventDispatcher {
 public:
 	EventDispatcher(Event& event) : m_Event(event) {}
 
-	template<typename T, typename F>
-	bool dispatch(F& func) {
+	template<typename T>
+	bool dispatch(std::function<bool(T&)> func) {
 		if (m_Event.getEventType() == T::getStaticType()) {
-			m_Event.m_Handled = func(static_cast<T*>(m_Event));
+			m_Event.m_Handled = func(static_cast<T&>(m_Event));
 			return true;
 		}
 
