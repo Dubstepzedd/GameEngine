@@ -10,7 +10,7 @@ public:
 private:
 	VertexArray* m_VertexArr = nullptr;
 	Shader* m_Shader = nullptr;
-	PerspectiveCamera* m_Camera = nullptr;
+	PerspectiveCameraController* m_Camera = nullptr;
 	IndexBuffer* m_IndexBuff = nullptr;
 	BufferLayout * m_Layout = nullptr;
 	VertexBuffer* m_VertexBuff = nullptr;

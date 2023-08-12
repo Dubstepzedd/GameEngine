@@ -5,6 +5,11 @@
 #include "engine/events/Event.h"
 #include "engine/core/LayerStack.h"
 #include "engine/helpers/GLManager.h"
+#include "engine/events/Input.h"
+#include <spdlog/spdlog.h>
+#include "engine/helpers/TimeStep.h"
+#include <functional>
+#include "engine/gfx/Renderer.h"
 
 class Application {
 

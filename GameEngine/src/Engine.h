@@ -9,8 +9,10 @@
 #include "engine/gfx/Buffer.h"
 #include "engine/gfx/Shader.h"
 #include "engine/gfx/camera/PerspectiveCamera.h"
+#include "engine/gfx/camera/PerspectiveCameraController.h"
 #include "engine/gfx/Renderer.h"
 
 //Events
 #include "engine/events/Input.h"
 #include "engine/events/KeyCode.h"
+
