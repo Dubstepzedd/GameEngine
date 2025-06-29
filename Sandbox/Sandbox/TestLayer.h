@@ -14,4 +14,5 @@ private:
 	IndexBuffer* m_IndexBuff = nullptr;
 	BufferLayout * m_Layout = nullptr;
 	VertexBuffer* m_VertexBuff = nullptr;
+	Texture* m_Texture = nullptr;
 };

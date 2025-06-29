@@ -5,7 +5,6 @@ class  TimeStep {
 
 public:
 	TimeStep(float time = 0.0f) : m_Time(time) {
-
 	}
 
 	float getSeconds() { return m_Time; }

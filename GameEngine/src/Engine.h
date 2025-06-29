@@ -11,8 +11,13 @@
 #include "engine/gfx/camera/PerspectiveCamera.h"
 #include "engine/gfx/camera/PerspectiveCameraController.h"
 #include "engine/gfx/Renderer.h"
+#include "engine/gfx/material/ColorMaterial.h"
+#include "engine/gfx/material/Material.h"
+#include "engine/gfx/Texture.h"
 
 //Events
 #include "engine/events/Input.h"
 #include "engine/events/KeyCode.h"
 
+// IO
+#include "engine/io/Resources.h"

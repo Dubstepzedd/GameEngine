@@ -1,7 +1,13 @@
 #pragma once
 
-
 #include "engine/gfx/camera/Camera.h"
+#include "engine/events/Event.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include "engine/core/Window.h"
+#include "engine/gfx/Renderer.h"
+#include <spdlog/spdlog.h>
+#include "engine/helpers/Core.h"
+
 class  PerspectiveCamera : public Camera {
 
 public:
@@ -10,9 +16,12 @@ public:
 		m_Far = farPlane;
 	};
 
-	void updateProj(const Shader& shader);
+	void updateProj();
 
-	void updateView(const Shader& shader);
+	void updateView();
+
+	void onEvent(Event& event);
+
 	glm::vec3 getFront() {
 		return m_Front;
 	}
@@ -21,8 +30,8 @@ public:
 		return m_Up;
 	}
 
-	void setFront(glm::vec3& front) { m_Front = front; }
-	void setUp(glm::vec3& up) { m_Up = up; }
+	void setFront(const glm::vec3& front) { m_Front = front; }
+	void setUp(const glm::vec3& up) { m_Up = up; }
 
 private:
 	float m_Fov;

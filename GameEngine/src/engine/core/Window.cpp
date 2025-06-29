@@ -105,6 +105,10 @@ void Window::setVSync(const bool vSync) {
     this->m_VSync = vSync;
 }
 
+void Window::setCursorState(int value) {
+    glfwSetInputMode(m_Window, GLFW_CURSOR, value);
+}
+
 void Window::setFullscreen(const bool value) {
     m_Fullscreen = value;
     if (value) {

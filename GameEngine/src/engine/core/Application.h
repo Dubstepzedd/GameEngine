@@ -11,10 +11,20 @@
 #include <functional>
 #include "engine/gfx/Renderer.h"
 
+
+struct ApplicationConfig {
+	unsigned int width = 1280;
+	unsigned int height = 720;
+	std::string title = "Game";
+	bool isResizable = false;
+	bool vsync = true;
+	// Add other configurable options here
+};
+
 class Application {
 
 public:
-	Application();
+	Application(const ApplicationConfig& config = {});
 	virtual ~Application() = default;
 	int run();
 	void onEvent(Event& e);

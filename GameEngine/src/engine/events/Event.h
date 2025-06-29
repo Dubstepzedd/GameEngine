@@ -19,13 +19,13 @@ enum class  EventCategory {
 
 // This macro is defined in order to reduce repeated code. It defines the type of an Event to your parameter as well as a getName method which returns the name.
 #define EVENT_CLASS_TYPE(type) \
-static EventType getStaticType() { return EventType::##type; } \
+static EventType getStaticType() { return EventType::type; } \
 virtual EventType getEventType() const override { return getStaticType(); } \
 virtual const char* getName() const override { return #type; }
 
 #define EVENT_CATEGORY(category) \
-virtual EventCategory getCategory() const override { return EventCategory::##category; } \
-virtual const char* getCategoryName() const override {return #category; } 
+virtual EventCategory getCategory() const override { return EventCategory::category; } \
+virtual const char* getCategoryName() const override { return #category; }
 
 class  Event {
 	friend class EventDispatcher; // Allows EventDispatcher to access protected/private members on Event objects.

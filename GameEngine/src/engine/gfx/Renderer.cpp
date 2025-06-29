@@ -12,10 +12,19 @@ void Renderer::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::bindShader(const Shader& shader) {
-	shader.bind();
+void Renderer::bindShader(Shader* shader) {
+	m_Shader = shader;
+	glUseProgram(m_Shader->getProgramId());
 }
 
-void Renderer::unbindShader(const Shader& shader) {
-	shader.unbind();
+void Renderer::unbindShader() {
+	m_Shader = nullptr;
+	glUseProgram(0);
+}
+
+void Renderer::onEvent(Event& event) {
+	if (event.getEventType() == EventType::WindowResize) {
+		FrameBufferChangedEvent& ev = (FrameBufferChangedEvent&)event;
+		glViewport(0, 0, ev.getWidth(), ev.getHeight());
+	}
 }

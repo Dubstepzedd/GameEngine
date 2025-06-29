@@ -1,10 +1,11 @@
+#pragma once
 #include "engine/io/Resources.h"
 #include <fstream>      // std::ifstream
 #include <iostream>
+#include <spdlog/spdlog.h>
+#include <filesystem>
 
 std::string Resources::readFile(const std::string path) {
-	//TODO Fix logging here.
-
 	std::string content;
 
 	std::ifstream reader(path, std::ifstream::in);
@@ -18,7 +19,14 @@ std::string Resources::readFile(const std::string path) {
 		content.append(line + '\n');
 	}
 
+	spdlog::info("File {} was read successfully.", path);
 	reader.close();
 
 	return content;
+}
+
+std::string Resources::getRelativePath(const std::string& relativePath) {
+	std::filesystem::path assetRoot = std::filesystem::current_path();
+	std::filesystem::path fullPath = assetRoot / relativePath;
+	return fullPath.string(); // returns full absolute path as string
 }

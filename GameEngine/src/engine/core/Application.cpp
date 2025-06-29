@@ -1,10 +1,9 @@
 #include "engine/core/Application.h"
 
-
 //Memory leak if we don't remove this?
 Application* m_Application = nullptr;
 
-Application::Application() {
+Application::Application(const ApplicationConfig& config) {
 	if (m_Application != nullptr) {
 		spdlog::error("Application instance already exists.");
 		throw std::bad_function_call();
@@ -16,11 +15,14 @@ Application::Application() {
 
 	m_Application = this;
 
-	int code = Window::getInstance().create("Test", 640, 640, false, true);
+	int code = Window::getInstance().create(config.title, config.width, config.height,
+		config.vsync, config.isResizable);
+
 	if (code == 1) {
 		spdlog::error("Failed to start Window instance.");
 		ENGINE_ASSERT("Failed to create Window instance.");
 	}
+
 }
 
 int Application::run() {
@@ -52,7 +54,7 @@ int Application::run() {
 	
 		//Update
 		Window::getInstance().swapBuffers();
-		Renderer::clear();
+		Renderer::getInstance().clear();
 		
 	
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -69,6 +71,7 @@ int Application::run() {
 
 void Application::onEvent(Event& event) {
 	//Handle KeyBoard and Mouse button input.
+	Renderer::getInstance().onEvent(event);
 	Input::getInstance().onEvent(event);
 
 	for (Layer* layer : m_LayerStack) {

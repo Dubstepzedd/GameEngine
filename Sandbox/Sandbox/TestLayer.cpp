@@ -1,15 +1,14 @@
 #include "TestLayer.h"
+#include "Engine.h"
 
 void TestLayer::onDetach() {
 	std::cout << "Detach" << std::endl;
-	m_Shader->unbind();
-
-
+	Renderer::getInstance().unbindShader();
 	delete m_Shader;
 	delete m_VertexArr;
 	delete m_Camera;
 	delete m_IndexBuff;
-
+	delete m_Texture;
 }
 
 void TestLayer::onAttach() {
@@ -18,37 +17,42 @@ void TestLayer::onAttach() {
 
 	BufferLayout layout = BufferLayout {
 		{ShaderDataType::FLOAT3, "aPos"},
-		{ShaderDataType::FLOAT3, "aColor"}
+		{ShaderDataType::FLOAT2, "aTexCoord"},
 	};
 
 	VertexBuffer buff = VertexBuffer {
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f,0.0f, // top right
-		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f, 0.0f,0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 0.0f,0.0f  // top left 
+		// position         // color            // texCoord
+		0.5f,  0.5f, 0.0f,  /*1.0f, 0.0f, 0.0f,*/   1.0f, 1.0f, // top right
+		0.5f, -0.5f, 0.0f,  /*1.0f, 0.0f, 0.0f,*/   1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, /*1.0f, 0.0f, 0.0f,*/   0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, /*1.0f, 0.0f, 0.0f,*/   0.0f, 1.0f  // top left
 	};
-
+	
 	m_VertexArr->setBuffer(buff, layout);
 
-	m_IndexBuff = new IndexBuffer {
+	m_IndexBuff = new IndexBuffer{
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-	//TODO Improve Resources class to have relative paths.
-	m_Shader = new Shader("C:/Programming/GameEngine/GameEngine/res/shaders/shader.glsl");
-	m_Shader->bind();
-	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3), *m_Shader);
+	m_Shader = new Shader("default_resources/shaders/texture_shader.glsl");
 	
+	Renderer::getInstance().bindShader(m_Shader);
+	m_Texture = new Texture(
+		"res/textures/texture.jpg"
+	);
 
-	std::cout << "Attach" << std::endl;
+	m_Shader->setSamplerUniform("uTexture", 0);
+	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3));
+	Window::getInstance().setCursorState(GLFW_CURSOR_DISABLED);
 
 }
 
 void TestLayer::onUpdate(TimeStep dt) {
-	
-	Renderer::draw(*m_VertexArr, *m_IndexBuff);
+	m_Texture->bind(0);
+	Renderer::getInstance().draw(*m_VertexArr, *m_IndexBuff);
 	m_Camera->onUpdate(dt);
+	m_Texture->unbind();
 }
 
 void TestLayer::onEvent(Event& event) {

@@ -1,5 +1,4 @@
 #include "engine/events/Input.h"
-#include <iostream>
 
 /* Keyboard callback */
 void Input::onEvent(Event& e) {
@@ -24,10 +23,10 @@ void Input::onEvent(Event& e) {
 	}
 }
 
-bool Input::isKeyPressed(int key) const {
+bool Input::isKeyPressed(KeyCode key) const {
 	return m_Keys[key];
 }
 
-bool Input::isButtonPressed(int button) const {
+bool Input::isButtonPressed(MouseCode button) const {
 	return m_Buttons[button];
 }

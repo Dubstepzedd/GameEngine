@@ -5,18 +5,19 @@
 #include <spdlog/spdlog.h>
 
 Shader::Shader(const std::string& path) {
-	ShaderProgramSource src = parseShader(path);
+	std::string absolutePath = Resources::getRelativePath(path);
+	ShaderProgramSource src = parseShader(absolutePath);
 	createShader(src.vertexSrc, src.fragmentSrc);
 }
 
 ShaderProgramSource Shader::parseShader(const std::string& path) {
 	std::string shaderCode;
-	/* Try/Catch block to catch eventual parsing file errors */
+	/* Try/Catch block to catch parsing file errors */
 	try {
 		shaderCode = Resources::readFile(path);
 	}
 	catch (const std::invalid_argument& e) {
-		//Improve
+		//TODO: Improve
 		spdlog::error("Error occured when parsing the file at {}.", path);
 		throw e;
 	}
@@ -99,14 +100,6 @@ int Shader::compileShader(const unsigned int type, const std::string& src) {
 
 	return id;
 }
-void Shader::unbind() const{
-	glUseProgram(0);
-}
-
-void Shader::bind() const {
-	glUseProgram(this->m_ProgramId);
-}
-
 
 /** Uniforms **/
 
@@ -155,4 +148,13 @@ void Shader::setMat3Uniform(const std::string& name, const glm::mat3 matrix, con
 	int location = glGetUniformLocation(this->m_ProgramId, name.c_str());
 	if (isValidUniform(location, name))
 		glUniformMatrix3fv(location, 1, transpose, glm::value_ptr(matrix[0]));
+}
+
+void Shader::setSamplerUniform(const std::string& name, int textureUnit) const {
+	GLint location = glGetUniformLocation(this->m_ProgramId, name.c_str());
+	if (location == -1) {
+		spdlog::error("Uniform '{}' not found in shader!", name);
+		return;
+	}
+	glUniform1i(location, textureUnit);
 }

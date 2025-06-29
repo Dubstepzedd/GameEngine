@@ -6,9 +6,13 @@
 #include <iostream>
 #include "Engine.h"
 
-class SandboxApp: public Application {
+class SandboxApp : public Application {
 public:
-
-private:
-
+    SandboxApp() : Application({
+        .width = 1920,
+        .height = 1080,
+        .title = "My Sandbox Game",
+        .isResizable = false,
+        .vsync = true
+    }) {}
 };

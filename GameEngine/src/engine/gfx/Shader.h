@@ -19,14 +19,14 @@ public:
 		glDeleteProgram(m_ProgramId);
 	}
 
-	void bind() const;
-	void unbind() const;
+	GLuint getProgramId() { return m_ProgramId; }
 	void setFloat4Uniform(const std::string& name, const glm::vec4 vector) const;
 	void setFloat3Uniform(const std::string& name, const glm::vec3 vector) const;
 	void setFloat2Uniforms(const std::string& name, const glm::vec2 vector) const;
 	void setFloatUniform(const std::string& name, const GLfloat& number) const;
 	void setMat4Uniform(const std::string& name, const glm::mat4 matrix, const bool transpose) const;
 	void setMat3Uniform(const std::string& name, const glm::mat3 matrix, const bool transpose) const;
+	void setSamplerUniform(const std::string& name, int textureUnit) const;
 private:
 	ShaderProgramSource parseShader(const std::string& path);
 	int compileShader(const unsigned int type, const std::string& src);

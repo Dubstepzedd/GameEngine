@@ -31,6 +31,7 @@ public:
 	void setFullscreen(const bool value);
 	void setClearColor(const float r, const float g, const float b, const float a);
 	void setAspectRatio(const int width, const int height);
+	void setCursorState(int value);
 
 	bool isFullscreen();
 	bool isVSync();

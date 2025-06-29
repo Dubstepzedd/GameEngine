@@ -15,11 +15,12 @@ This class is a standard PerspectiveCameraController that can be used right away
 If you need something changed, you'll need to override this class. 
 A note: In the future, keybinds and properties should be easy to change, but key features will still need to be implemented if needed.
 */
+
 class  PerspectiveCameraController {
 
 public:
-	PerspectiveCameraController(const glm::vec3 pos, const Shader& shader) : m_Camera(pos), m_Shader(shader) {
-		m_Camera.updateProj(shader); 
+	PerspectiveCameraController(const glm::vec3 pos) : m_Camera(pos) {
+		m_Camera.updateProj(); 
 	}
 
 	virtual void onUpdate(const TimeStep dt);
@@ -29,8 +30,7 @@ private:
 	float m_Zoom = 1.0f;
 	float m_Yaw = 0, m_Pitch = 0;
 	float m_LastY = 320, m_LastX = 320;
+	float m_MouseSensitivity = 0.4f, m_Speed = 0.1f;
 	PerspectiveCamera m_Camera;
-	const Shader& m_Shader;
 	
-
 };

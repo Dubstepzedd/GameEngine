@@ -7,3 +7,6 @@
 [submodule "GameEngine/libs/submodules/glm"]
 	path = GameEngine/libs/submodules/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "GameEngine/libs/submodules/stb"]
+	path = GameEngine/libs/submodules/stb
+	url = https://github.com/nothings/stb.git

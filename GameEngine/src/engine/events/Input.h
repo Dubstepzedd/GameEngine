@@ -17,8 +17,8 @@ public:
     Input(const Input&) = delete;
     void operator=(const Input&) = delete;
     void onEvent(Event& e);
-    bool isKeyPressed(int key) const;
-    bool isButtonPressed(int button) const;
+    bool isKeyPressed(KeyCode key) const;
+    bool isButtonPressed(MouseCode button) const;
 private:
     Input() {}
     bool m_Keys[350]{};

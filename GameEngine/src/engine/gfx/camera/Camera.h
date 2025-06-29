@@ -9,8 +9,8 @@ class  Camera {
 public:
 	Camera(const glm::vec3 pos) : m_Pos(pos), m_View(glm::mat4(1.0f)), m_Proj(glm::mat4(1.0f)) {};
 
-	virtual void updateProj(const Shader& shader) = 0;
-	virtual void updateView(const Shader& shader) = 0;
+	virtual void updateProj() = 0;
+	virtual void updateView() = 0;
 
 	glm::vec3 getPos() const {
 		return m_Pos;
