@@ -1,8 +1,12 @@
 #include "engine/gfx/Renderer.h"
 
-void Renderer::draw(const VertexArray& vArr, const IndexBuffer& iBuff) {
+void Renderer::draw(const VertexArray& vArr, const IndexBuffer& iBuff, Material& material, const glm::mat4& view, const glm::mat4& proj) {
 	vArr.bind();
 	iBuff.bind();
+
+	material.setUniform("uView", view);
+	material.setUniform("uProj", proj);
+	material.bind();
 	glDrawElements(GL_TRIANGLES, iBuff.getCount(), GL_UNSIGNED_INT, (const void*)0); 
 	iBuff.unbind();
 	vArr.unbind();
@@ -10,16 +14,6 @@ void Renderer::draw(const VertexArray& vArr, const IndexBuffer& iBuff) {
 
 void Renderer::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Renderer::bindShader(Shader* shader) {
-	m_Shader = shader;
-	glUseProgram(m_Shader->getProgramId());
-}
-
-void Renderer::unbindShader() {
-	m_Shader = nullptr;
-	glUseProgram(0);
 }
 
 void Renderer::onEvent(Event& event) {

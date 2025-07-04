@@ -25,7 +25,7 @@ std::string Resources::readFile(const std::string path) {
 	return content;
 }
 
-std::string Resources::getRelativePath(const std::string& relativePath) {
+std::string Resources::getFullPath(const std::string& relativePath) {
 	std::filesystem::path assetRoot = std::filesystem::current_path();
 	std::filesystem::path fullPath = assetRoot / relativePath;
 	return fullPath.string(); // returns full absolute path as string

@@ -1,40 +1,61 @@
-#pragma once
-#include <glad/glad.h>
-#include <string>
-#include <glm/glm.hpp>
+#pragma once  
+#include <glad/glad.h>  
+#include <string>  
+#include <glm/glm.hpp>  
+#include <vector>  
+#include <optional>  
+#include <variant> 
 
+using UniformValue = std::variant<  
+   float,  
+   glm::vec2,  
+   glm::vec3,  
+   glm::vec4,  
+   glm::mat3,  
+   glm::mat4,  
+   int // for sampler2D  
+>;  
 
-struct  ShaderProgramSource {
-	std::string vertexSrc;
-	std::string fragmentSrc;
+struct ShaderUniform {  
+   std::string name;  
+   GLenum type;  
+   int size;  
+   int location;  
+};  
+
+struct ShaderProgramSource {  
+   std::string vertexSrc;  
+   std::string fragmentSrc;  
+};  
+
+class Shader {  
+public:  
+   Shader(const std::string& path);  
+
+   ~Shader() {  
+       glDeleteProgram(m_ProgramId);  
+   }  
+
+   GLuint getProgramId() const { return m_ProgramId; }  
+   void setUniform(const std::string& name, const UniformValue& value);
+   bool hasUniform(const std::string& name) const;  
+   std::optional<GLenum> getUniformType(const std::string& name) const;  
+
+   void setFloat4Uniform(const std::string& name, const glm::vec4 vector) const;
+   void setFloat3Uniform(const std::string& name, const glm::vec3 vector) const;
+   void setFloat2Uniforms(const std::string& name, const glm::vec2 vector) const;
+   void setFloatUniform(const std::string& name, const GLfloat& number) const;
+   void setMat4Uniform(const std::string& name, const glm::mat4 matrix, const bool transpose) const;
+   void setMat3Uniform(const std::string& name, const glm::mat3 matrix, const bool transpose) const;
+   void setSamplerUniform(const std::string& name, int textureUnit) const;
+
+private:  
+   ShaderProgramSource parseShader(const std::string& path);  
+   int compileShader(const unsigned int type, const std::string& src);  
+   void createShader(const std::string& vertexSrc, const std::string& fragmentSrc);  
+   bool isValidUniform(const int location, const std::string& name) const;  
+
+   std::vector<ShaderUniform> getActiveUniforms() const;  
+   std::vector<ShaderUniform> m_ActiveUniforms;  
+   GLuint m_ProgramId = 0;  
 };
-
-//TODO: Would be nice to parse two different .glsl files instead of just one. Some like it that way
-class  Shader {
-	
-public:
-	Shader(const std::string& path);
-
-	~Shader() {
-		glDeleteProgram(m_ProgramId);
-	}
-
-	GLuint getProgramId() { return m_ProgramId; }
-	void setFloat4Uniform(const std::string& name, const glm::vec4 vector) const;
-	void setFloat3Uniform(const std::string& name, const glm::vec3 vector) const;
-	void setFloat2Uniforms(const std::string& name, const glm::vec2 vector) const;
-	void setFloatUniform(const std::string& name, const GLfloat& number) const;
-	void setMat4Uniform(const std::string& name, const glm::mat4 matrix, const bool transpose) const;
-	void setMat3Uniform(const std::string& name, const glm::mat3 matrix, const bool transpose) const;
-	void setSamplerUniform(const std::string& name, int textureUnit) const;
-private:
-	ShaderProgramSource parseShader(const std::string& path);
-	int compileShader(const unsigned int type, const std::string& src);
-	void createShader(const std::string& vertexSrc, const std::string& fragmentSrc);
-	bool isValidUniform(const int location, const std::string& name) const;
-	GLuint m_ProgramId = 0;
-};
-
-
-
-

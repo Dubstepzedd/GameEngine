@@ -5,9 +5,10 @@
 #include <spdlog/spdlog.h>
 
 Shader::Shader(const std::string& path) {
-	std::string absolutePath = Resources::getRelativePath(path);
+	std::string absolutePath = Resources::getFullPath(path);
 	ShaderProgramSource src = parseShader(absolutePath);
 	createShader(src.vertexSrc, src.fragmentSrc);
+	m_ActiveUniforms = getActiveUniforms();
 }
 
 ShaderProgramSource Shader::parseShader(const std::string& path) {
@@ -17,7 +18,6 @@ ShaderProgramSource Shader::parseShader(const std::string& path) {
 		shaderCode = Resources::readFile(path);
 	}
 	catch (const std::invalid_argument& e) {
-		//TODO: Improve
 		spdlog::error("Error occured when parsing the file at {}.", path);
 		throw e;
 	}
@@ -43,14 +43,134 @@ ShaderProgramSource Shader::parseShader(const std::string& path) {
 	}
 
 	return { vertex, fragment };
-
-
 }
 
+bool Shader::hasUniform(const std::string& name) const {
+	if (m_ActiveUniforms.empty()) {
+		spdlog::warn("Shader uniforms have not been populated yet!");
+		return false;
+	}
+
+	auto it = std::find_if(m_ActiveUniforms.begin(), m_ActiveUniforms.end(), [&](const ShaderUniform& item) {
+		return item.name == name;
+	});
+
+	if (it == m_ActiveUniforms.end()) {
+		spdlog::warn("Uniform {} not found in shader program.", name);
+		return false;
+	}
+
+	return true;
+}
+
+void Shader::setUniform(const std::string& name, const UniformValue& value) {
+	if (!hasUniform(name)) {
+		spdlog::error("Uniform {} does not exist in shader program.", name);
+		return;
+	}
+
+	std::optional<GLenum> type = getUniformType(name);
+
+	if (type.has_value() == false) {
+		spdlog::error("Could not retrieve type for uniform {}.", name);
+		return;
+	}
+
+	bool matched = false;
+
+	std::visit([&](auto&& val) {
+		using T = std::decay_t<decltype(val)>;
+		switch (type.value()) {
+		case GL_FLOAT:
+			if constexpr (std::is_same_v<T, float>) {
+				setFloatUniform(name, val);
+				matched = true;
+			}
+			break;
+		case GL_FLOAT_VEC2:
+			if constexpr (std::is_same_v<T, glm::vec2>) {
+				setFloat2Uniforms(name, val);
+				matched = true;
+			}
+			break;
+		case GL_FLOAT_VEC3:
+			if constexpr (std::is_same_v<T, glm::vec3>) {
+				setFloat3Uniform(name, val);
+				matched = true;
+			}
+			break;
+		case GL_FLOAT_VEC4:
+			if constexpr (std::is_same_v<T, glm::vec4>) {
+				setFloat4Uniform(name, val);
+				matched = true;
+			}
+			break;
+		case GL_SAMPLER_2D:
+			if constexpr (std::is_same_v<T, int>) {
+				setSamplerUniform(name, val);
+				matched = true;
+			}
+			break;
+		case GL_FLOAT_MAT3:
+			if constexpr (std::is_same_v<T, glm::mat3>) {
+				setMat3Uniform(name, val, false);
+				matched = true;
+			}
+			break;
+		case GL_FLOAT_MAT4:
+			if constexpr (std::is_same_v<T, glm::mat4>) {
+				setMat4Uniform(name, val, false);
+				matched = true;
+			}
+			break;
+		default:
+			spdlog::error("Unsupported uniform type for {}", name);
+		}
+		}, value);
+
+	if (!matched) {
+		spdlog::error("Type mismatch for uniform {}", name);
+	}
+}
+
+
+std::optional<GLenum> Shader::getUniformType(const std::string& name) const
+{
+    auto it = std::find_if(m_ActiveUniforms.begin(), m_ActiveUniforms.end(), [&](const ShaderUniform& item) {
+        return item.name == name;
+    });
+
+    if (it == m_ActiveUniforms.end()) {
+        spdlog::warn("Uniform '{}' not found in shader program.", name);
+        return std::nullopt;  // signify "not found"
+    }
+
+    return it->type;
+}
+
+std::vector<ShaderUniform> Shader::getActiveUniforms() const {
+   GLint uniformCount;
+   glGetProgramiv(this->m_ProgramId, GL_ACTIVE_UNIFORMS, &uniformCount);
+
+   char name[256];
+   GLsizei length;
+   GLint size;
+   GLenum type;
+
+   std::vector<ShaderUniform> uniforms;
+
+   for (GLint i = 0; i < uniformCount; ++i) {
+       glGetActiveUniform(this->m_ProgramId, i, sizeof(name), &length, &size, &type, name);
+       GLint location = glGetUniformLocation(this->m_ProgramId, name);
+       uniforms.push_back({ name, type, size, location });
+   }
+
+   return uniforms;
+}
 void Shader::createShader(const std::string& vertexSrc, const std::string& fragmentSrc) {
 	unsigned int vertexId = compileShader(GL_VERTEX_SHADER, vertexSrc); 
 	unsigned int fragmentId = compileShader(GL_FRAGMENT_SHADER, fragmentSrc);
-	
+
 	this->m_ProgramId = glCreateProgram();
 	glAttachShader(this->m_ProgramId, vertexId);
 	glAttachShader(this->m_ProgramId, fragmentId);
@@ -94,7 +214,7 @@ int Shader::compileShader(const unsigned int type, const std::string& src) {
 		glGetShaderInfoLog(id, infoLogLength, NULL, strInfoLog);
 
 		//Temporary print that shall be replaced with logging
-		spdlog::error("Compile failure in vertex shader:\n{}", strInfoLog);
+		spdlog::error("Compile failure in shader:\n{}", strInfoLog);
 		delete[] strInfoLog;
 	}
 

@@ -3,12 +3,11 @@
 
 void TestLayer::onDetach() {
 	std::cout << "Detach" << std::endl;
-	Renderer::getInstance().unbindShader();
-	delete m_Shader;
 	delete m_VertexArr;
 	delete m_Camera;
 	delete m_IndexBuff;
 	delete m_Texture;
+	m_Material->unbind();
 }
 
 void TestLayer::onAttach() {
@@ -35,24 +34,21 @@ void TestLayer::onAttach() {
 		1, 2, 3    // second triangle
 	};
 
-	m_Shader = new Shader("default_resources/shaders/texture_shader.glsl");
-	
-	Renderer::getInstance().bindShader(m_Shader);
+	m_Shader = std::make_shared<Shader>("default_resources/shaders/texture_shader.glsl");
 	m_Texture = new Texture(
 		"res/textures/texture.jpg"
 	);
-
-	m_Shader->setSamplerUniform("uTexture", 0);
+	m_Material = new Material(m_Shader);
+	m_Material->setUniform("uTexture", 0);
 	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3));
 	Window::getInstance().setCursorState(GLFW_CURSOR_DISABLED);
-
 }
 
 void TestLayer::onUpdate(TimeStep dt) {
 	m_Texture->bind(0);
-	Renderer::getInstance().draw(*m_VertexArr, *m_IndexBuff);
+	Renderer::getInstance().draw(*m_VertexArr, *m_IndexBuff, *m_Material, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix());
 	m_Camera->onUpdate(dt);
-	m_Texture->unbind();
+	m_Texture->unbind(0);
 }
 
 void TestLayer::onEvent(Event& event) {

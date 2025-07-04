@@ -21,12 +21,21 @@ public:
 	void updateView();
 
 	void onEvent(Event& event);
+	
 
-	glm::vec3 getFront() {
+	glm::mat4 getProjectionMatrix() const {
+		return m_Proj;
+	}
+
+	glm::mat4 getViewMatrix() const {
+		return m_View;
+	}
+
+	glm::vec3 getFront() const {
 		return m_Front;
 	}
 
-	glm::vec3 getUp() {
+	glm::vec3 getUp() const {
 		return m_Up;
 	}
 

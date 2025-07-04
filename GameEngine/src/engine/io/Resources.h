@@ -6,6 +6,6 @@ class Resources {
 
 public:
 	static std::string readFile(const std::string path);
-	static std::string getRelativePath(const std::string& relativePath);
+	static std::string getFullPath(const std::string& relativePath);
 };
 

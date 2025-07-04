@@ -11,8 +11,8 @@ public:
     Texture& operator=(Texture&&) = default;
     ~Texture();
 
-    void bind(unsigned int slot = 0);
-    void unbind();
+    void bind(unsigned int slot = 0) const;
+    void unbind(unsigned int slot = 0) const;
 
     unsigned int getWidth() const {
         return m_Width;

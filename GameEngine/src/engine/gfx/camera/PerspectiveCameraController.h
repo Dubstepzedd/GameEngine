@@ -23,6 +23,14 @@ public:
 		m_Camera.updateProj(); 
 	}
 
+	glm::mat4 getViewMatrix() const {
+		return m_Camera.getViewMatrix();
+	}
+
+	glm::mat4 getProjectionMatrix() const {
+		return m_Camera.getProjectionMatrix();
+	}
+
 	virtual void onUpdate(const TimeStep dt);
 	virtual void onEvent(Event& event);
 	virtual bool onMouseMovedEvent(MouseMovedEvent& event);
