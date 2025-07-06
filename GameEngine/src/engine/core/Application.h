@@ -10,6 +10,7 @@
 #include "engine/helpers/TimeStep.h"
 #include <functional>
 #include "engine/gfx/Renderer.h"
+#include <engine/io/AssetManager.h>
 
 
 struct ApplicationConfig {
@@ -27,10 +28,12 @@ public:
 	Application(const ApplicationConfig& config = {});
 	virtual ~Application() = default;
 	int run();
+	AssetManager& getAssetManager() { return m_AssetManager; }
 	void onEvent(Event& e);
 	void pushLayer(Layer* layer) { m_LayerStack.pushLayer(layer); }
 	void removeLayer(Layer* layer) { m_LayerStack.popLayer(layer); }
 private:
 	float m_LastFrameTime = 0;
 	LayerStack m_LayerStack;
+	AssetManager m_AssetManager;
 };

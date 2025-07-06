@@ -6,9 +6,9 @@
 #include "TestLayer.h"
 
 int main()
-{
-	TestLayer layer = TestLayer();
+{	
 	SandboxApp app = SandboxApp();
+	TestLayer layer = TestLayer(app.getAssetManager());
 	app.pushLayer(&layer);
 	app.run();
 }

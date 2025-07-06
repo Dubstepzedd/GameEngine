@@ -6,7 +6,6 @@ void TestLayer::onDetach() {
 	delete m_VertexArr;
 	delete m_Camera;
 	delete m_IndexBuff;
-	delete m_Texture;
 	m_Material->unbind();
 }
 
@@ -27,6 +26,11 @@ void TestLayer::onAttach() {
 		-0.5f,  0.5f, 0.0f, /*1.0f, 0.0f, 0.0f,*/   0.0f, 1.0f  // top left
 	};
 	
+	AssetHandle shaderHandle = m_AssetManager.loadAsset<Shader>("default_resources/shaders/texture_shader.glsl");
+	AssetHandle textureHandle = m_AssetManager.loadAsset<Texture>("res/textures/texture.jpg");
+	spdlog::info("Shader handle: {}", shaderHandle.toString()); // Looks good
+	spdlog::info("Texture handle: {}", textureHandle.toString()); // Looks good
+
 	m_VertexArr->setBuffer(buff, layout);
 
 	m_IndexBuff = new IndexBuffer{
@@ -34,21 +38,15 @@ void TestLayer::onAttach() {
 		1, 2, 3    // second triangle
 	};
 
-	m_Shader = std::make_shared<Shader>("default_resources/shaders/texture_shader.glsl");
-	m_Texture = new Texture(
-		"res/textures/texture.jpg"
-	);
-	m_Material = new Material(m_Shader);
-	m_Material->setUniform("uTexture", 0);
+	m_Material = new Material(shaderHandle);
+	m_Material->setTexture("uTexture", textureHandle);
 	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3));
 	Window::getInstance().setCursorState(GLFW_CURSOR_DISABLED);
 }
 
 void TestLayer::onUpdate(TimeStep dt) {
-	m_Texture->bind(0);
-	Renderer::getInstance().draw(*m_VertexArr, *m_IndexBuff, *m_Material, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix());
+	Renderer::getInstance().draw(*m_VertexArr, *m_IndexBuff, *m_Material, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix(), m_AssetManager);
 	m_Camera->onUpdate(dt);
-	m_Texture->unbind(0);
 }
 
 void TestLayer::onEvent(Event& event) {

@@ -19,7 +19,7 @@ public:
     Renderer(const Renderer&) = delete;
     void operator=(const Renderer&) = delete;
 
-	void draw(const VertexArray& vArr, const IndexBuffer& iBuff, Material& material, const glm::mat4& view, const glm::mat4& proj);
+	void draw(const VertexArray& vArr, const IndexBuffer& iBuff, Material& material, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager);
 	void clear();
     void onEvent(Event& event);
 

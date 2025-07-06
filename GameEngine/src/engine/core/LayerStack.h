@@ -19,4 +19,5 @@ public:
 private:
 	std::vector<Layer*> m_Layers;
 	int m_LayerIndex = 0; //We want a stack data type, not a queue.
+	AssetManager m_AssetManager;
 };

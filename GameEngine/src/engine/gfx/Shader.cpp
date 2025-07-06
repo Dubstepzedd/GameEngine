@@ -4,11 +4,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <spdlog/spdlog.h>
 
-Shader::Shader(const std::string& path) {
-	std::string absolutePath = Resources::getFullPath(path);
+Shader::Shader(const std::string& path) : Asset(path) {}
+
+bool Shader::load() {
+	std::string absolutePath = Resources::getFullPath(m_Path);
 	ShaderProgramSource src = parseShader(absolutePath);
 	createShader(src.vertexSrc, src.fragmentSrc);
 	m_ActiveUniforms = getActiveUniforms();
+	return true;
 }
 
 ShaderProgramSource Shader::parseShader(const std::string& path) {
