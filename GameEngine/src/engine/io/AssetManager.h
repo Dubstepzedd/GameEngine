@@ -9,7 +9,7 @@
 #include <concepts>
 
 template<typename T>
-concept DerivedFromAsset = std::is_base_of<Asset, T>::value;
+concept DerivedFromAsset = std::derived_from<T, Asset>;
 
 class AssetManager {
 
@@ -17,6 +17,7 @@ public:
 
     template<DerivedFromAsset T>
     std::shared_ptr<T> getAsset(const AssetHandle& handle) {
+        
         if (!handle.isValid()) {
 			spdlog::error("Invalid AssetHandle provided to AssetManager::getAsset");
             return nullptr;

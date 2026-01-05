@@ -5,6 +5,7 @@
 
 # Custom ignored files & folders.
 GameEngine/out/build/
+Sandbox/res
 # User-specific files
 *.rsuser
 *.suo

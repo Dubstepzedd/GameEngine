@@ -15,14 +15,27 @@ public:
         }
 
         glUseProgram(shader->getProgramId());
+        std::vector<ShaderUniform> uniforms = shader->getActiveUniforms();
+
+        // Check for uniforms declared in shader but not set in m_Uniforms or m_Textures
+        for (const auto& uniform : uniforms) {
+            const std::string& name = uniform.name;
+
+            // Check if uniform is missing from both maps
+            bool isSet = (m_Uniforms.find(name) != m_Uniforms.end()) || (m_Textures.find(name) != m_Textures.end());
+
+            if (!isSet) {
+                spdlog::warn("Uniform '{}' declared in shader but not set in Material", name);
+            }
+        }
 
         // Bind regular uniforms
         for (const auto& [name, value] : m_Uniforms) {
-            shader->setUniform(name, value); // uses your Shader::setUniform(...)
+            shader->setUniform(name, value);
         }
 
         // Bind textures
-        int textureUnit = 0; // Texture unit counter
+        int textureUnit = 0;
         for (const auto& [name, handle] : m_Textures) {
             if (handle.type != AssetType::Texture) {
                 spdlog::warn("Uniform '{}' has non-texture AssetHandle in m_TextureUniforms", name);
@@ -35,8 +48,8 @@ public:
                 continue;
             }
 
-            texture->bind(textureUnit);               // binds texture to GL_TEXTURE0 + textureUnit
-            shader->setSamplerUniform(name, textureUnit);    // pass the unit as sampler2D uniform
+            texture->bind(textureUnit);
+            shader->setSamplerUniform(name, textureUnit);
             textureUnit++;
         }
     }

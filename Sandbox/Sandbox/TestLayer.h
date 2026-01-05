@@ -12,10 +12,11 @@ public:
 	virtual void onEvent(Event& event) override;
 
 private:
-	VertexArray* m_VertexArr = nullptr;
+	std::shared_ptr<VertexArray> m_VertexArr = nullptr;
 	PerspectiveCameraController* m_Camera = nullptr;
-	IndexBuffer* m_IndexBuff = nullptr;
+	std::shared_ptr<IndexBuffer> m_IndexBuff = nullptr;
 	BufferLayout * m_Layout = nullptr;
 	VertexBuffer* m_VertexBuff = nullptr;
-	Material* m_Material = nullptr;
+	std::shared_ptr<Material> m_Material = nullptr;
+	Mesh* m_Mesh = nullptr;
 };

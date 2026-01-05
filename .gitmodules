@@ -10,3 +10,6 @@
 [submodule "GameEngine/libs/submodules/stb"]
 	path = GameEngine/libs/submodules/stb
 	url = https://github.com/nothings/stb.git
+[submodule "GameEngine/libs/submodules/assimp"]
+	path = GameEngine/libs/submodules/assimp
+	url = https://github.com/assimp/assimp

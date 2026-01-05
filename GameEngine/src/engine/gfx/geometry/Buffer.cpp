@@ -1,4 +1,4 @@
-#include "engine/gfx/Buffer.h"
+#include "engine/gfx/geometry/Buffer.h"
 
 /** BufferLayout methods **/
 void BufferLayout::calculateOffsetAndStride() {

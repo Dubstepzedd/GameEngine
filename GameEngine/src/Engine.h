@@ -6,7 +6,7 @@
 #include "engine/core/Application.h"
 
 //Graphics
-#include "engine/gfx/Buffer.h"
+#include "engine/gfx/geometry/Buffer.h"
 #include "engine/gfx/Shader.h"
 #include "engine/gfx/camera/PerspectiveCamera.h"
 #include "engine/gfx/camera/PerspectiveCameraController.h"
@@ -20,3 +20,4 @@
 
 // IO
 #include "engine/io/Resources.h"
+#include "engine/io/geometry/MeshLoader.h"

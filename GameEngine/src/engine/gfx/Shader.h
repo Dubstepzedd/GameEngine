@@ -43,6 +43,7 @@ public:
    void setUniform(const std::string& name, const UniformValue& value);
    void setSamplerUniform(const std::string& name, int textureUnit) const;
    bool hasUniform(const std::string& name) const;  
+   std::vector<ShaderUniform> getActiveUniforms() const;
    std::optional<GLenum> getUniformType(const std::string& name) const;  
 private:  
    ShaderProgramSource parseShader(const std::string& path);  
@@ -56,7 +57,6 @@ private:
    void setMat4Uniform(const std::string& name, const glm::mat4 matrix, const bool transpose) const;
    void setMat3Uniform(const std::string& name, const glm::mat3 matrix, const bool transpose) const;
 
-   std::vector<ShaderUniform> getActiveUniforms() const;  
    std::vector<ShaderUniform> m_ActiveUniforms;  
    GLuint m_ProgramId = 0;  
 };

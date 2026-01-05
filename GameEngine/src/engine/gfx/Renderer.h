@@ -1,6 +1,6 @@
 #pragma once
-
-#include "engine/gfx/Buffer.h"
+#include "engine/gfx/geometry/Mesh.h"
+#include "engine/gfx/geometry/Buffer.h"
 #include "engine/gfx/Shader.h"
 #include "engine/events/Event.h"
 #include "engine/core/Window.h"
@@ -19,7 +19,7 @@ public:
     Renderer(const Renderer&) = delete;
     void operator=(const Renderer&) = delete;
 
-	void draw(const VertexArray& vArr, const IndexBuffer& iBuff, Material& material, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager);
+	void draw(const Mesh& mesh, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager);
 	void clear();
     void onEvent(Event& event);
 

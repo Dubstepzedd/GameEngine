@@ -1,16 +1,14 @@
 #include "engine/gfx/Renderer.h"
 
-void Renderer::draw(const VertexArray& vArr, const IndexBuffer& iBuff, Material& material, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager) {
-	vArr.bind();
-	iBuff.bind();
+void Renderer::draw(const Mesh& mesh, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager) {
+	mesh.bind();
+	mesh.getMaterial()->setUniform("uView", view);
+	mesh.getMaterial()->setUniform("uProj", proj);
+	mesh.getMaterial()->bind(manager);
 
-	material.setUniform("uView", view);
-	material.setUniform("uProj", proj);
-	material.bind(manager);
-	glDrawElements(GL_TRIANGLES, iBuff.getCount(), GL_UNSIGNED_INT, (const void*)0); 
-	material.unbind();
-	iBuff.unbind();
-	vArr.unbind();
+	glDrawElements(GL_TRIANGLES, mesh.getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+
+	mesh.getMaterial()->unbind();
 }
 
 void Renderer::clear() {

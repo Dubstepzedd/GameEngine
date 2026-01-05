@@ -2,9 +2,9 @@
 #pragma once
 enum class AssetType {
 	Unknown = 0,  // MUST be 0
-	Texture = 1,
-	Mesh = 2,
-	Shader = 3,
+	Texture,
+	Mesh,
+	Shader,
 };
 
 struct AssetHandle {
