@@ -48,20 +48,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
 set(STB_DIR ${LIB_DIR}/submodules/stb)
 target_include_directories(${PROJECT_NAME} PUBLIC ${STB_DIR})
 
-# ASSIMP
-set(ASSIMP_DIR ${LIB_DIR}/submodules/assimp)
-add_subdirectory(${ASSIMP_DIR})
-target_link_libraries(${PROJECT_NAME} PUBLIC assimp)
-
-# Link Assimp
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE assimp
-)
-
-# Include Assimp headers
-target_include_directories(${PROJECT_NAME}
-    PRIVATE external/assimp/include
-)
 # Copy the resources to the consumer
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD

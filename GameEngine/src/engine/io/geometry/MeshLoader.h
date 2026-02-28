@@ -7,6 +7,8 @@
 #include <fstream>
 #include "spdlog/spdlog.h"
 
+static const int OBJ_INVALID_INDEX = -1;
+
 enum class ObjElementType {
     POSITION,
     TEXCOORD,
@@ -15,9 +17,9 @@ enum class ObjElementType {
 };
 
 struct ObjIndex {
-    unsigned int posIndex;
-    unsigned int uvIndex;
-    unsigned int normIndex;
+    int posIndex;
+    int uvIndex = OBJ_INVALID_INDEX; // Optional
+    int normIndex = OBJ_INVALID_INDEX; // Optional
 };
 
 struct ObjFace {

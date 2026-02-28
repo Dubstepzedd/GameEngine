@@ -16,7 +16,7 @@ If you need something changed, you'll need to override this class.
 A note: In the future, keybinds and properties should be easy to change, but key features will still need to be implemented if needed.
 */
 
-class  PerspectiveCameraController {
+class PerspectiveCameraController {
 
 public:
 	PerspectiveCameraController(const glm::vec3 pos) : m_Camera(pos) {

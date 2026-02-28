@@ -13,6 +13,7 @@
 #include "engine/gfx/Renderer.h"
 #include "engine/gfx/material/Material.h"
 #include "engine/gfx/Texture.h"
+#include "engine/gfx/geometry/MeshFactory.h"
 
 //Events
 #include "engine/events/Input.h"

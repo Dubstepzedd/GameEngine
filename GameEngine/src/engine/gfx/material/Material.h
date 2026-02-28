@@ -7,15 +7,20 @@
 
 class Material {
 public:
-    void bind(AssetManager& manager) const {
-        std::shared_ptr<Shader> shader = manager.getAsset<Shader>(m_Handle);
-        if (!shader) {
-            spdlog::error("Shader not found or invalid handle in Material::bind");
-            return;
+    Material(AssetHandle shaderHandle, std::shared_ptr<AssetManager> manager) {
+        if (shaderHandle.type != AssetType::Shader) {
+            throw std::invalid_argument("Invalid AssetHandle type for Material constructor");
         }
 
-        glUseProgram(shader->getProgramId());
-        std::vector<ShaderUniform> uniforms = shader->getActiveUniforms();
+        m_Manager = manager;
+        m_Shader = m_Manager->getAsset<Shader>(shaderHandle);
+
+    }
+
+    void bind() const {
+
+        glUseProgram(m_Shader->getProgramId());
+        std::vector<ShaderUniform> uniforms = m_Shader->getActiveUniforms();
 
         // Check for uniforms declared in shader but not set in m_Uniforms or m_Textures
         for (const auto& uniform : uniforms) {
@@ -31,7 +36,7 @@ public:
 
         // Bind regular uniforms
         for (const auto& [name, value] : m_Uniforms) {
-            shader->setUniform(name, value);
+            m_Shader->setUniform(name, value);
         }
 
         // Bind textures
@@ -42,20 +47,24 @@ public:
                 continue;
             }
 
-            std::shared_ptr<Texture> texture = manager.getAsset<Texture>(handle);
+            std::shared_ptr<Texture> texture = m_Manager->getAsset<Texture>(handle);
             if (!texture) {
                 spdlog::error("Failed to load texture for uniform '{}'", name);
                 continue;
             }
 
             texture->bind(textureUnit);
-            shader->setSamplerUniform(name, textureUnit);
+            m_Shader->setSamplerUniform(name, textureUnit);
             textureUnit++;
         }
     }
 
 	void unbind() const {
 		glUseProgram(0);
+	}
+
+    BufferLayout getLayout() const {
+        return m_Shader->getLayout();
 	}
 
 	void setTexture(const std::string& name, const AssetHandle& textureHandle) {
@@ -70,16 +79,9 @@ public:
 		m_Uniforms[name] = value;
 	}
 
-	Material(AssetHandle shaderHandle)
-		: m_Handle(shaderHandle) {
-		if (shaderHandle.type != AssetType::Shader) {
-			spdlog::error("Material must be initialized with a Shader asset handle");
-			m_Handle = AssetHandle(); // Invalid handle
-        }
-	}
-
 protected:
-	AssetHandle m_Handle;
+	std::shared_ptr<AssetManager> m_Manager;
+    std::shared_ptr<Shader> m_Shader;
 	std::unordered_map<std::string, UniformValue> m_Uniforms;
 	std::unordered_map<std::string, AssetHandle> m_Textures;
 };

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <glad/glad.h>
 #include "engine/helpers/Core.h"
 #include <string>
@@ -70,24 +69,28 @@ static GLenum getOpenGLType(const ShaderDataType type) {
 
 
 
-struct  BufferElement {
-	std::string Name;
-	uint32_t Size;
-	ShaderDataType Type;
-	uint32_t Offset;
-	bool Normalized;
+struct BufferElement {
+	std::string m_Name;
+	size_t m_Size;
+	ShaderDataType m_Type;
+	uint32_t m_Offset;
+	bool m_Normalized;
 
-	BufferElement(ShaderDataType type, std::string name, bool normalized = false) : Name(name), Type(type), Size(getTypeSize(type)), Offset(0), Normalized(normalized) {}
+	BufferElement(ShaderDataType type, std::string name, bool normalized = false) : m_Name(name), m_Type(type), m_Size(getTypeSize(type)), m_Offset(0), m_Normalized(normalized) {}
 
 };
 
 class  BufferLayout {
 public:
+	BufferLayout() {}
 	BufferLayout(const std::initializer_list<BufferElement>& elements) : m_Elements(elements) {
 		
 		calculateOffsetAndStride();
 	}
 	
+	bool isInitialized() const {
+		return !m_Elements.empty();
+	}
 	void set() const;
 	void enable() const;
 	void disable() const;
@@ -95,7 +98,7 @@ public:
 private:
 	void calculateOffsetAndStride();
 	std::vector<BufferElement> m_Elements;
-	uint32_t m_Stride;
+	uint32_t m_Stride = 0;
 
 };
 
@@ -109,10 +112,10 @@ public:
 		unbind();
 	}
 
-	VertexBuffer(float data[], uint32_t sizeBytes) {
+	VertexBuffer(float data[], size_t count) {
 		glGenBuffers(1, &m_Vbo);
 		bind();
-		glBufferData(GL_ARRAY_BUFFER, sizeBytes, data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, count * sizeof(float), data, GL_STATIC_DRAW);
 		unbind();
 	}
 
@@ -135,6 +138,14 @@ public:
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.begin(), GL_STATIC_DRAW);
 		unbind();
 	};
+	
+	IndexBuffer(unsigned int indices[], size_t count) : m_Count(count) {
+		glGenBuffers(1, &m_Ibo);
+		bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+		unbind();
+	};
+
 	~IndexBuffer() {
 		glDeleteBuffers(1, &m_Ibo);
 	}
@@ -156,16 +167,24 @@ public:
 	VertexArray() {
 		glGenVertexArrays(1, &m_Vao);
 	}
+
 	~VertexArray() {
-		glDeleteVertexArrays(1, &m_Vao);
+		// Only delete if we actually own a valid ID (not moved from)
+		if (m_Vao != 0) {
+			glDeleteVertexArrays(1, &m_Vao);
+		}
 	}
 
+	VertexArray(const VertexArray&) = delete;
+	VertexArray& operator=(const VertexArray&) = delete;
+
 	//TODO Might want to add so we can have multiple VertexBuffers with corresponding layouts.
-	void setBuffer(const VertexBuffer& buffer, const BufferLayout& layout);
+	void setBuffer(const std::shared_ptr<VertexBuffer> buffer, const BufferLayout& layout);
 	void bind() const;
 	void unbind() const;
 
 
 private:
-	uint32_t m_Vao;
+	uint32_t m_Vao = 0;
+	std::shared_ptr<VertexBuffer> m_Vbo;
 };

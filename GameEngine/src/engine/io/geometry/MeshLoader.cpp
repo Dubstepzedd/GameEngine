@@ -59,17 +59,30 @@ ObjFace MeshLoader::parseFace(const std::string& data) {
 		std::string val;
 
 		if (std::getline(segmentStream, val, '/')) {
-			objIndex.posIndex = std::stoi(val) - 1;
+			int parsed = std::stoi(val);
+			if (parsed < 0) {
+				throw std::invalid_argument("Negative position index not allowed in face data");
+			}
+			objIndex.posIndex = parsed - 1;
 		}
 
 		if (std::getline(segmentStream, val, '/')) {
 			if (!val.empty()) {
-				objIndex.uvIndex = std::stoi(val) - 1;
+				int parsed = std::stoi(val);
+				if (parsed < 0) {
+					throw std::invalid_argument("Negative uv index not allowed in face data");
+				}
+				objIndex.uvIndex = parsed - 1;
 			}
 
 			if (std::getline(segmentStream, val, '/')) {
 				if (!val.empty()) {
-					objIndex.normIndex = std::stoi(val) - 1;
+					int parsed = std::stoi(val);
+					if (parsed < 0) {
+						throw std::invalid_argument("Negative normal index not allowed in face data");
+					}
+
+					objIndex.normIndex = parsed - 1;
 				}
 			}
 		}

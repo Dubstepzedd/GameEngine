@@ -6,6 +6,7 @@
 #include <optional>  
 #include <variant> 
 #include "engine/io/Asset.h"
+#include "engine/gfx/geometry/Buffer.h"
 
 using UniformValue = std::variant<  
    float,  
@@ -44,7 +45,16 @@ public:
    void setSamplerUniform(const std::string& name, int textureUnit) const;
    bool hasUniform(const std::string& name) const;  
    std::vector<ShaderUniform> getActiveUniforms() const;
-   std::optional<GLenum> getUniformType(const std::string& name) const;  
+   std::optional<GLenum> getUniformType(const std::string& name) const;
+   
+   void setLayout(BufferLayout layout) {
+       m_BufferLayout = layout;
+   }
+
+   BufferLayout getLayout() const {
+       return m_BufferLayout;
+   }
+
 private:  
    ShaderProgramSource parseShader(const std::string& path);  
    int compileShader(const unsigned int type, const std::string& src);  
@@ -59,4 +69,5 @@ private:
 
    std::vector<ShaderUniform> m_ActiveUniforms;  
    GLuint m_ProgramId = 0;  
+   BufferLayout m_BufferLayout;
 };

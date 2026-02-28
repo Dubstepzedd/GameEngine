@@ -1,10 +1,11 @@
 #include "engine/gfx/Renderer.h"
 
-void Renderer::draw(const Mesh& mesh, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager) {
+void Renderer::draw(const Mesh& mesh, const glm::mat4& model, const glm::mat4& view, const glm::mat4& proj, std::shared_ptr<AssetManager> manager) {
 	mesh.bind();
 	mesh.getMaterial()->setUniform("uView", view);
 	mesh.getMaterial()->setUniform("uProj", proj);
-	mesh.getMaterial()->bind(manager);
+	mesh.getMaterial()->setUniform("uModel", model);
+	mesh.getMaterial()->bind();
 
 	glDrawElements(GL_TRIANGLES, mesh.getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
 

@@ -1,4 +1,5 @@
 #include "engine/gfx/geometry/Buffer.h"
+#include "spdlog/spdlog.h"
 
 /** BufferLayout methods **/
 void BufferLayout::calculateOffsetAndStride() {
@@ -7,16 +8,16 @@ void BufferLayout::calculateOffsetAndStride() {
 	m_Stride = 0;
 
 	for (auto& el : m_Elements) {
-		el.Offset = offset;
-		offset += el.Size;
-		m_Stride += el.Size;
+		el.m_Offset = offset;
+		offset += el.m_Size;
+		m_Stride += el.m_Size;
 	}
 }
 
 void BufferLayout::set() const {
 	uint32_t index = 0;
 	for (auto& el : m_Elements) {
-		glVertexAttribPointer(index, getComponentSize(el.Type), getOpenGLType(el.Type), el.Normalized, m_Stride, (const void*)el.Offset);
+		glVertexAttribPointer(index, getComponentSize(el.m_Type), getOpenGLType(el.m_Type), el.m_Normalized, m_Stride, (const uint32_t*)el.m_Offset);
 		index++;
 	}
 }
@@ -31,7 +32,6 @@ void BufferLayout::disable() const {
 		glDisableVertexAttribArray(index);
 }
 
-
 /** VertexBuffer methods **/
 
 void VertexBuffer::bind() const {
@@ -42,15 +42,20 @@ void VertexBuffer::unbind() const {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-
 /** VertexArray methods **/
 
-void VertexArray::setBuffer(const VertexBuffer& buffer, const BufferLayout& layout) {
+void VertexArray::setBuffer(const std::shared_ptr<VertexBuffer> buffer, const BufferLayout& layout) {
+	if (!layout.isInitialized()) {
+		spdlog::error("BufferLayout not initialized before being set to VertexArray.");
+		ENGINE_ASSERT(false, "BufferLayout not initialized before being set to VertexArray.");
+	}
+
+	m_Vbo = buffer;
 	bind();
-	buffer.bind();
+	buffer->bind();
 	layout.enable();
 	layout.set();
-	buffer.unbind();
+	buffer->unbind();
 	unbind();
 
 }

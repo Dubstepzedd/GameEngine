@@ -13,6 +13,7 @@ Application::Application(const ApplicationConfig& config) {
 	spdlog::set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
 	spdlog::info("[OpenGL Version] {}", glfwGetVersionString());
 
+	m_AssetManager = std::make_shared<AssetManager>();
 	m_Application = this;
 
 	int code = Window::getInstance().create(config.title, config.width, config.height,

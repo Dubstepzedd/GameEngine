@@ -170,6 +170,7 @@ std::vector<ShaderUniform> Shader::getActiveUniforms() const {
 
    return uniforms;
 }
+
 void Shader::createShader(const std::string& vertexSrc, const std::string& fragmentSrc) {
 	unsigned int vertexId = compileShader(GL_VERTEX_SHADER, vertexSrc); 
 	unsigned int fragmentId = compileShader(GL_FRAGMENT_SHADER, fragmentSrc);

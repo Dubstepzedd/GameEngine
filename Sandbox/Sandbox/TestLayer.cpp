@@ -13,16 +13,17 @@ void TestLayer::onAttach() {
 	
 	BufferLayout layout = BufferLayout {
 		{ShaderDataType::FLOAT3, "aPos"},
-		{ShaderDataType::FLOAT2, "aTexCoord"}
 	};
 
-	VertexBuffer buff = VertexBuffer {
-		// position          // texCoord
-		0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-		0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // top left
-	};
+	std::shared_ptr<VertexBuffer> buff = std::make_shared<VertexBuffer>(
+		std::initializer_list<float>{
+			// position          
+			0.5f,  0.5f, 0.0f,   // top right
+			0.5f, -0.5f, 0.0f,   // bottom right
+			-0.5f, -0.5f, 0.0f,  // bottom left
+			-0.5f,  0.5f, 0.0f,  // top left
+		}
+	);
 
 	m_VertexArr->setBuffer(buff, layout);
 	
@@ -30,25 +31,29 @@ void TestLayer::onAttach() {
 		0, 1, 3,   // first triangle  
 		1, 2, 3    // second triangle  
 	});
-	
-	
 
-	AssetHandle shaderHandle = m_AssetManager.loadAsset<Shader>("default_resources/shaders/texture_shader.glsl");
-	AssetHandle textureHandle = m_AssetManager.loadAsset<Texture>("res/textures/studentbostäder.png");
+	AssetHandle shaderHandle = m_AssetManager->loadAsset<Shader>("default_resources/shaders/color_shader.glsl");
+	AssetHandle textureHandle = m_AssetManager->loadAsset<Texture>("res/textures/studentbostäder.png");
 
-	m_Material = std::make_shared<Material>(shaderHandle);
-	m_Material->setTexture("uTexture", textureHandle);
+	// Added this step to a shader (we could use reflective shaders to do this automatically in the future)
+	m_AssetManager->getAsset<Shader>(shaderHandle)->setLayout(BufferLayout({
+		BufferElement(ShaderDataType::FLOAT3, "aPos"),
+		BufferElement(ShaderDataType::FLOAT3, "aNormal")
+	}));
+
+	m_Material = std::make_shared<Material>(shaderHandle, m_AssetManager);
+	//m_Material->setTexture("uTexture", textureHandle);
 
     m_Mesh = new Mesh(m_VertexArr, m_IndexBuff, m_Material);
 	m_Camera = new PerspectiveCameraController(glm::vec3(0, 0, 3));
 	Window::getInstance().setCursorState(GLFW_CURSOR_DISABLED);
-
-	RawModelData data = MeshLoader::loadMesh("res/models/bugatti.obj");
-	std::cout << data.faces.size() << std::endl;
+	RawModelData data = MeshLoader::loadMesh("res/models/model.obj");
+	m_LoadedMesh = MeshFactory::createMesh(data, m_Material);
 }
 
 void TestLayer::onUpdate(TimeStep dt) {
-	Renderer::getInstance().draw(*m_Mesh, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix(), m_AssetManager);
+	Renderer::getInstance().draw(*m_LoadedMesh, m_Model, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix(), m_AssetManager);
+	//Renderer::getInstance().draw(*m_Mesh, m_Camera->getViewMatrix(), m_Camera->getProjectionMatrix(), m_AssetManager);
 	m_Camera->onUpdate(dt);
 }
 

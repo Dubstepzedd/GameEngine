@@ -3,7 +3,7 @@
 
 class TestLayer : public Layer {
 public:
-	TestLayer(AssetManager& assetManager)
+	TestLayer(std::shared_ptr<AssetManager> assetManager)
 		: Layer(assetManager) {
 	}
 	virtual void onDetach() override;
@@ -19,4 +19,7 @@ private:
 	VertexBuffer* m_VertexBuff = nullptr;
 	std::shared_ptr<Material> m_Material = nullptr;
 	Mesh* m_Mesh = nullptr;
+
+	glm::mat4 m_Model = glm::mat4(1.0f);
+	std::shared_ptr<Mesh> m_LoadedMesh = nullptr;
 };

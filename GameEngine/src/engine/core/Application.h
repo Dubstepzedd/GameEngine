@@ -28,12 +28,12 @@ public:
 	Application(const ApplicationConfig& config = {});
 	virtual ~Application() = default;
 	int run();
-	AssetManager& getAssetManager() { return m_AssetManager; }
+	std::shared_ptr<AssetManager> getAssetManager() { return m_AssetManager; }
 	void onEvent(Event& e);
 	void pushLayer(Layer* layer) { m_LayerStack.pushLayer(layer); }
 	void removeLayer(Layer* layer) { m_LayerStack.popLayer(layer); }
 private:
 	float m_LastFrameTime = 0;
 	LayerStack m_LayerStack;
-	AssetManager m_AssetManager;
+	std::shared_ptr<AssetManager> m_AssetManager;
 };

@@ -5,7 +5,7 @@
 
 class Layer {
 public:
-	explicit Layer(AssetManager& assetManager) : m_AssetManager(assetManager) {}
+	explicit Layer(std::shared_ptr<AssetManager> assetManager) : m_AssetManager(assetManager) {}
 	virtual ~Layer() = default;
 
 	virtual void onDetach() = 0;
@@ -13,5 +13,5 @@ public:
 	virtual void onUpdate(TimeStep dt) = 0;
 	virtual void onEvent(Event& event) = 0;
 protected:
-	AssetManager& m_AssetManager;
+	std::shared_ptr<AssetManager> m_AssetManager;
 };

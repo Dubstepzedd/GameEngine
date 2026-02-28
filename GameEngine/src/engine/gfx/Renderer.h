@@ -19,7 +19,7 @@ public:
     Renderer(const Renderer&) = delete;
     void operator=(const Renderer&) = delete;
 
-	void draw(const Mesh& mesh, const glm::mat4& view, const glm::mat4& proj, AssetManager& manager);
+	void draw(const Mesh& mesh, const glm::mat4& model, const glm::mat4& view, const glm::mat4& proj, std::shared_ptr<AssetManager> manager);
 	void clear();
     void onEvent(Event& event);
 
